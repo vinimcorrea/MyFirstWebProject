@@ -3,18 +3,23 @@
    Script: denver_Sqlite.sql
    Description: Creates and populates the Denver Deliever database.
    DB Server: Sqlite
-   Author: Luis Rocha
+   Author: Vinícius Corrêa
    License: http://www.codeplex.com/ChinookDatabase/license
 ********************************************************************************/
 
+.bail on
+.mode columns
+.header on
+.nullvalue NULL
 
+PRAGMA foreign_keys = ON;
 
 
 DROP TABLE IF EXISTS Restaurant;
 DROP TABLE IF EXISTS Menu;
 DROP TABLE IF EXISTS Dish;
 DROP TABLE IF EXISTS Customer;
-DROP TABLE IF EXISTS Oder;
+DROP TABLE IF EXISTS Orders;
 
 /*******************************************************************************
    Create Tables
@@ -23,55 +28,119 @@ DROP TABLE IF EXISTS Oder;
 
 CREATE TABLE Restaurant(
 	RestaurantId INTEGER PRIMARY KEY,
-	logo BLOB,
-	city VARCHAR(50),
-	province VARCHAR(50),
-	country VARCHAR(50),
-	
-	
+	Logo BLOB,
+	RestaurantName VARCHAR(50),
+	Street VARCHAR(50),
+	City VARCHAR(50),
+	Province VARCHAR(50),
+	Country VARCHAR(50),
+	Review REAL CONSTRAINT outOfReview CHECK (review > 0 and review <= 5),
+	Price VARCHAR(3),
+	OwnerId REFERENCES Owner ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE Menu(
 	IdMenu INTEGER,
 	RestaurantId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
-	name VARCHAR(75),
-	summary TEXT,
-	createdAt DATE,
-	updatedAt DATE,
-	content TEXT,
+	MenuName VARCHAR(75),
+	Summary TEXT,
+	UpdatedAt DATE,
+	Content TEXT,
 	PRIMARY KEY(RestaurantId, IdMenu)
 	
 );
 
 CREATE TABLE Dish(
 	DishId INTEGER PRIMARY KEY,
-	price REAL,
-	ingredients TEXT,
-	
-	
+	name VARCHAR,
+	Photo BLOB,
+	Categories VARCHAR,
+	Price REAL,
+	Ingredients TEXT,
+	Vegan BOOLEAN
 );
 
-CREATE TABLE Customer(
-    CustomerId INTEGER NOT NULL,
-    Password VARCHAR(32) NOT NULL,
+
+/* Creating the 3 types of user, (Owner, Customer and Driver) */
+
+CREATE TABLE User(
+	UserId INTEGER PRIMARY KEY NOT NULL,
+	Password VARCHAR(32) NOT NULL,
     Email VARCHAR(50) NOT NULL, 
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
     Mobile VARCHAR(15) NOT NULL,
-    Address VARCHAR(70),
+    AddressC VARCHAR(70),
     City VARCHAR(40),
     State VARCHAR(40),
     Country VARCHAR(40),
     Gender VARCHAR(10) CONSTRAINT genderUser CHECK(Gender in ('Male', 'Female', 'Other'), 
     DateOfBirth DATE,
-    profile TEXT
     CONSTRAINT  Pk_Customer PRIMARY KEY (CustomerId),
     CONSTRAINT tooYoung CHECK (DATE('now') - DateOfBirth < 16)
 );
 
-CREATE TABLE Oder(
-	meal_id INT PRIMARY KEY,
-	total FLOAT,
-	status VARCHAR(20),
+
+CREATE TABLE Owner(
+	OwnerId REFERENCES User ON DELETE SET NULL ON UPDATE CASCADE,
+	RestarauntId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
+	PRIMARY KEY(OwnerId)
 );
 
+CREATE TABLE Customer(
+    CustomerId REFERENCES User ON DELETE SET NULL ON UPDATE CASCADE,
+	PRIMARY KEY(CustomerId);
+);
+
+CREATE TABLE Driver(
+	IdDriver REFERENCES User ON DELETE SET NULL ON UPDATE CASCADE,
+	IdRestaurant REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
+	PRIMARY KEY(IdDriver)
+);
+
+/* finished creating users db */
+
+CREATE TABLE Order(
+	OrderId INT PRIMARY KEY,
+	CustomerId REFERENCES Customer ON DELETE SET NULL ON UPDATE CASCADE,
+	RestaurantId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
+	TotalPrice FLOAT,
+	TimeToArrive FLOAT,
+	StatusOrder VARCHAR(20) CONSTRAINT statusFood CHECK(StatusOrder in ('Preparing', '')),	
+	Price FLOAT,
+	IsPaid BOOLEAN,
+	Note VARCHAR(500)
+);
+
+
+CREATE TABLE Category(
+	CategoryId INT PRIMARY KEY,
+	FirstName VARCHAR(100) NOT NULL,
+	Description VARCHAR(100) NOT NULL,
+	
+);
+
+CREATE TABLE ReviewRestaurant(
+	ReviewId INT PRIMARY KEY NOT NULL,
+	CustomerId REFERENCES Customer ON DELETE SET NULL ON UPDATE CASCADE,
+	RestaurantId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
+	Comment VARCHAR(500),
+	Stars VARCHAR(5)
+);
+
+CREATE TABLE ReviewDish(
+	ReviewId INT PRIMARY KEY NOT NULL,
+	CustomerId REFERENCES Customer ON DELETE SET NULL ON UPDATE CASCADE,
+	DishId REFERENCES Dish ON DELETE SET NULL ON UPDATE CASCADE,
+	Comment VARCHAR(500),
+	Stars VARCHAR(5)
+);
+
+CREATEA TABLE Images(
+	ImagesId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
+	
+)
+
+CREATE TABLE Notification(
+
+);
