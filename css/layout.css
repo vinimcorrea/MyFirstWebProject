@@ -1,0 +1,47 @@
+html {
+    background-color: #EDEFF0;
+}
+
+
+html {
+    width: 60em;
+    margin: auto;
+}
+
+footer {
+    color: white;
+    background-color: #F4655F;
+}
+li a {
+    color: #2A2F33;
+}
+
+li:hover a {
+    color: white;
+}
+
+
+
+.container {
+    background-color: #eee;padding: 5px;
+}
+.item {
+    color: black; text-align: center; margin: 2px; padding: 0em; background-color: green;
+
+}
+
+footer p {
+    background-color: #2A2F33;
+}
+footer p {
+    color: white;
+}
+h1 a {
+    color: whitesmoke;
+
+}
+
+aside {
+    color: whitesmoke;
+    background-color: #2A2F33;
+}
