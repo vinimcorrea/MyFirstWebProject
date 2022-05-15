@@ -2,18 +2,22 @@
 
 <?php function drawHeader() { ?>
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <title>Music Shop</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="javascript/script.js" defer></script>
-  </head>
-  <body>
-
-    <header>
-      <h1><a href="/">Music Shop</a></h1>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deliever Shop</title>
+</head>
+<body>
+  
+  <header class="responsive-header">
+    <div class="responsive-header__logo logo-restaurant-plain">
+      <a class="btn-icon" rel href="">
+        <span class="icon">
+        </span>
+      </a>
+    </div>
       <?php 
         if (isset($_SESSION['id'])) drawLogoutForm($_SESSION['name']);
         else drawLoginForm();
@@ -27,7 +31,7 @@
     </main>
 
     <footer>
-      LTW Music Example &copy; 2022
+      LTW  &copy; 2022
     </footer>
   </body>
 </html>

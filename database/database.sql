@@ -28,7 +28,6 @@ DROP TABLE IF EXISTS Orders;
 
 CREATE TABLE Restaurant(
 	RestaurantId INTEGER PRIMARY KEY,
-	Logo BLOB,
 	RestaurantName VARCHAR(50),
 	Street VARCHAR(50),
 	City VARCHAR(50),
@@ -40,24 +39,24 @@ CREATE TABLE Restaurant(
 );
 
 CREATE TABLE Menu(
-	IdMenu INTEGER,
+	IdMenu INTEGER PRIMARY KEY,
 	RestaurantId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
 	MenuName VARCHAR(75),
 	Summary TEXT,
 	UpdatedAt DATE,
 	Content TEXT,
-	PRIMARY KEY(RestaurantId, IdMenu)
 	
 );
 
 CREATE TABLE Dish(
-	DishId INTEGER PRIMARY KEY,
-	name VARCHAR,
-	Photo BLOB,
-	Categories VARCHAR,
+	MenuId REFERENCES Menu ON DELETE SET NULL ON UPDATE CASCADE,
+	CategoryId REFERENCES Category ON DELETE SET NULL ON UPDATE CASCADE,
+	Name VARCHAR,
+	Photo TEXT,
 	Price REAL,
 	Ingredients TEXT,
-	Vegan BOOLEAN
+	Vegan BOOLEAN,
+	PRIMARY KEY(MenuId, CategoryId)
 );
 
 
@@ -66,18 +65,16 @@ CREATE TABLE Dish(
 CREATE TABLE User(
 	UserId INTEGER PRIMARY KEY NOT NULL,
 	Password VARCHAR(32) NOT NULL,
-    Email VARCHAR(50) NOT NULL, 
+    Email VARCHAR(50) NOT NULL UNIQUE, 
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
-    Mobile VARCHAR(15) NOT NULL,
+    Mobile VARCHAR(15) NOT NULL UNIQUE,
     AddressC VARCHAR(70),
     City VARCHAR(40),
     State VARCHAR(40),
     Country VARCHAR(40),
     Gender VARCHAR(10) CONSTRAINT genderUser CHECK(Gender in ('Male', 'Female', 'Other'), 
     DateOfBirth DATE,
-    CONSTRAINT  Pk_Customer PRIMARY KEY (CustomerId),
-    CONSTRAINT tooYoung CHECK (DATE('now') - DateOfBirth < 16)
 );
 
 
@@ -106,7 +103,7 @@ CREATE TABLE Order(
 	RestaurantId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
 	TotalPrice FLOAT,
 	TimeToArrive FLOAT,
-	StatusOrder VARCHAR(20) CONSTRAINT statusFood CHECK(StatusOrder in ('Preparing', '')),	
+	StatusOrder VARCHAR(20) CONSTRAINT statusFood CHECK(StatusOrder in ('Received Order', 'Preparing', 'Delivering', 'Delivered')),	
 	Price FLOAT,
 	IsPaid BOOLEAN,
 	Note VARCHAR(500)
@@ -115,7 +112,7 @@ CREATE TABLE Order(
 
 CREATE TABLE Category(
 	CategoryId INT PRIMARY KEY,
-	FirstName VARCHAR(100) NOT NULL,
+	name TEXT NOT NULL,
 	Description VARCHAR(100) NOT NULL,
 	
 );
@@ -140,7 +137,3 @@ CREATEA TABLE Images(
 	ImagesId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
 	
 )
-
-CREATE TABLE Notification(
-
-);

@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 
 class Restaurant{
-    public int $id;
-    public string $logo;
+    public int    $restaurantId;
     public string $restaurantName;
     public string $street;
     public string $city;
@@ -10,10 +10,10 @@ class Restaurant{
     public string $country;
     public string $review;
     public string $price;
+    public int    $ownerId;
 
     function __construct(int $id, string $logo, string $restaurantName, string $street, string $city, string $province, string $country, string $review, string $price){
         $this->id = $id;
-        $this->logo = $logo;
         $this->restaurantName = $restaurantName;
         $this->street = $street;
         $this->city = $city;
@@ -21,6 +21,7 @@ class Restaurant{
         $this->country = $country;
         $this->review = $review;
         $this->price = $price;
+        $this->ownerId = $ownerId;
     }
 
     function save($db){
@@ -30,6 +31,27 @@ class Restaurant{
 
         $stmt->execute(array($this->RestauratName, $this->id));
     }
+
+    static function getRestaurant(PDO $db, int $id): Restaurant
+    {
+        $stmt = $db->prepare('SELECT restaurantId, name, category FROM Restaurant WHERE restaurantId = ?');
+        $stmt->execute(array($id));
+
+        $restaurant = $stmt->fetch();
+
+        return new Restaurant(
+            $restaurant['RestaurantId'],
+            $restaurant['RestaurantName'],
+            $restaurant['Street'],
+            $restaurant['City'],
+            $restaurant['Province'],
+            $restaurant['Country'],
+            $restaurant['Review'],
+            $restaurant['Price'],
+            $restaurant['OwnerId']
+        );
+    }
+
 }
 
 ?>
