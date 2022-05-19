@@ -5,16 +5,16 @@
 
     require_once('database/connection.db.php');
     require_once('database/restaurant.class.php');
-    require_once('database/customer.class.php');
 
     require_once('templates/common.tpl.php');
+    require_once('templates/restaurant.tpl.php');
 
     $db = getDatabaseConnection();
 
-    //$customers = Customer::getCostumer($db, 8);
+    $restaurants = Restaurant::getRestaurants($db, 3);
 
     drawHeader();
-    // drawMainPage();
+    drawRestaurants($restaurants);
     drawFooter();
 
 ?>
