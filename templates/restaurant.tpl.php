@@ -6,7 +6,15 @@
 
 <?php function drawRestaurants(array $restaurants) { ?>
   <header>
-    <input id="searchrestaurant" type="text" placeholder="search">
+    <div class="searchRestaurant">
+      <p> What you need is here. Ask and receive wherever you are. 
+      </p>
+      <form onsubmit="event.preventDefault();" role="search">
+        <label for="search">Search for stuff</label>
+        <input id="search" type="search" placeholder="Search..." autofocus required />
+        <button type="submit">Go</button>    
+      </form>
+    </div>
   </header>
   <section id="restaurants">
     <?php foreach($restaurants as $restaurant) { ?> 
