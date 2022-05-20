@@ -133,7 +133,7 @@ form {
   background: var(--color-brand);
   border-radius: var(--rad);
 }
-input, button {
+#search, button {
   height: var(--height);
   font-family: var(--font-fam);
   border: 0;

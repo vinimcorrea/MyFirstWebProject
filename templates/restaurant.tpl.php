@@ -1,12 +1,12 @@
 <?php 
   declare(strict_types = 1); 
 
-  require_once('database/connection.db.php');
+  require_once(__DIR__ . '/../database/connection.db.php');
 
-  require_once('database/restaurant.class.php');
-  require_once('database/category.class.php');
-  require_once('database/menu.class.php');
-  require_once('database/dish.class.php');
+  require_once(__DIR__ . '/../database/restaurant.class.php');
+  require_once(__DIR__ . '/../database/category.class.php');
+  require_once(__DIR__ . '/../database/menu.class.php');
+  require_once(__DIR__ . '/../database/dish.class.php');
 ?>
 
 <?php function drawRestaurants(array $restaurants, array $categories) { ?>
@@ -55,7 +55,7 @@
   </div>
 
   <section id="restaurants">
-  <input id="search" type="search" placeholder="Search..." autofocus required />
+  <input id="search" type="search" placeholder="Search..." autofocus required/>
     <?php foreach($menus as $menu) { ?>
       <?php drawMenu($menu, $dishes, $categories); ?>
       <?php } ?>
