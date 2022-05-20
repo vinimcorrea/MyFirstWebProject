@@ -12,9 +12,10 @@
     $db = getDatabaseConnection();
 
     $restaurants = Restaurant::getRestaurants($db, 3);
+    $categories  = Category::getCategories($db, 3);
 
     drawHeader();
-    drawRestaurants($restaurants);
+    drawRestaurants($restaurants, $categories);
     drawFooter();
 
 ?>

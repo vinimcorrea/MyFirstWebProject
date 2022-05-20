@@ -13,7 +13,7 @@
 <body>
   
   <header class="responsive-header">
-    <a href="#default" class="logo">CompanyLogo</a>
+    <a href="index.php" class="logo">CompanyLogo</a>
     <!--
     <div class="responsive-header-container">
       <button type="button" tabindex="0" class="btn-container">

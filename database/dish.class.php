@@ -8,9 +8,9 @@ class Dish{
     public string  $name;
     public float   $price;
     public string  $ingredients;
-    public bool    $isVegan;
+    public string  $isVegan;
 
-    public function __construct(int $menuId, int $categoryId, string $name, float $price, string $ingredients, bool $isVegan){
+    public function __construct(int $menuId, int $categoryId, string $name, float $price, string $ingredients, string $isVegan){
         $this->menuId = $menuId;
         $this->categoryId = $categoryId;
         $this->name = $name;
@@ -35,6 +35,8 @@ class Dish{
                 $dish['Vegan']
             );
         }
+
+        return $dishes;
     }
 
     static function getDish(PDO $db, int $menuId, int $categoryId) : Dish {
@@ -54,8 +56,6 @@ class Dish{
     }
 
 }
-
-
 
 
 ?>
