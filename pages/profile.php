@@ -1,10 +1,22 @@
 <?php
-    $id = $_GET['id'];
+  declare(strict_types = 1);
 
-    $db = new PDO('sqlite:database/database.sql');
+  require_once(__DIR__ . '/../utils/session.php');
+  $session = new Session();
 
-    $stmt = $db-> prepare('SELECT * FROM Restaurant WHERE RestaurantId = ?');
+  if (!$session->isLoggedIn()) die(header('Location: /'));
 
-    
-    
+  require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../database/user.class.php');
+
+  require_once(__DIR__ . '/../templates/common.tpl.php');
+  require_once(__DIR__ . '/../templates/user.tpl.php');
+
+  $db = getDatabaseConnection();
+
+  $customer = Customer::getCustomer($db, $session->getId());
+
+  drawHeader($session);
+  drawProfileForm($customer);
+  drawFooter();
 ?>

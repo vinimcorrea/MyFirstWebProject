@@ -8,28 +8,41 @@
 
 DROP TABLE IF EXISTS User;
 CREATE TABLE User (
-    UserId      INTEGER      PRIMARY KEY,
-    Password    VARCHAR (32) NOT NULL,
-    Email       VARCHAR (50) NOT NULL
-                             UNIQUE,
-    FirstName   VARCHAR (30) NOT NULL,
-    LastName    VARCHAR (30) NOT NULL,
-    Mobile      VARCHAR (15) NOT NULL
-                             UNIQUE,
-    AddressC    VARCHAR (70),
-    City        VARCHAR (40),
-    State       VARCHAR (40),
-    Country     VARCHAR (40),
-    Gender      VARCHAR (10) CONSTRAINT genderUser CHECK (Gender IN ('Male', 'Female', 'Other') ),
-    DateOfBirth VARCHAR (40) 
+    Email     VARCHAR (50) PRIMARY KEY,
+    Password  VARCHAR (32) NOT NULL,
+    FirstName VARCHAR (30) NOT NULL,
+    LastName  VARCHAR (30) NOT NULL,
+    Mobile    VARCHAR (15) NOT NULL
+                           UNIQUE,
+    IsOwner   BOOLEAN
 );
 
-DROP TABLE IF EXISTS Owner;
-CREATE TABLE Owner(
-	OwnerId REFERENCES User ON DELETE SET NULL ON UPDATE CASCADE,
-	RestarauntId REFERENCES Restaurant ON DELETE SET NULL ON UPDATE CASCADE,
-	PRIMARY KEY(OwnerId)
+
+DROP TABLE IF EXISTS UserAddress;
+CREATE TABLE UserAddress (
+    UserId    INTEGER REFERENCES User (Email) ON DELETE SET NULL
+                                              ON UPDATE CASCADE,
+    AddressId INTEGER REFERENCES Address (AddressId) ON DELETE SET NULL
+                                                     ON UPDATE CASCADE,
+    PRIMARY KEY (
+        UserId,
+        AddressId
+    )
 );
+
+
+
+DROP TABLE IF EXISTS RestaurantOwner;
+CREATE TABLE RestaurantOwner (
+    OwnerId       REFERENCES User ON DELETE SET NULL
+                                  ON UPDATE CASCADE,
+    RestarauntId  REFERENCES Restaurant ON DELETE SET NULL
+                                        ON UPDATE CASCADE,
+    PRIMARY KEY (
+        RestarauntId
+    )
+);
+
 
 DROP TABLE IF EXISTS Customer;
 CREATE TABLE Customer (
@@ -57,17 +70,31 @@ DROP TABLE IF EXISTS Restaurant;
 CREATE TABLE Restaurant (
     RestaurantId   INTEGER      PRIMARY KEY,
     RestaurantName VARCHAR (50),
-    Street         VARCHAR (50),
-    City           VARCHAR (50),
-    Province       VARCHAR (50),
-    Country        VARCHAR (50),
-    Review         REAL         CONSTRAINT outOfReview CHECK (review > 0 AND 
+    Review         REAL         CONSTRAINT outOfReview CHECK (review >= 0 AND 
                                                               review <= 5),
     Price          VARCHAR (3),
-    OwnerId,
-    CategoryId     INT          REFERENCES Category (CategoryId) ON DELETE SET NULL
-                                                                 ON UPDATE CASCADE
+    OwnerId        INTEGER      REFERENCES Owner (OwnerId) ON DELETE SET NULL
+                                                           ON UPDATE CASCADE,
+    CategoryId     INTEGER      REFERENCES Category (CategoryId) ON DELETE SET NULL
+                                                                 ON UPDATE CASCADE,
+    AddressId      INTEGER      REFERENCES Address (AddressId) ON DELETE SET NULL
+                                                               ON UPDATE CASCADE
 );
+
+
+DROP TABLE IF EXISTS RestaurantAddress;
+CREATE TABLE RestaurantAddress (
+    RestaurantId INTEGER REFERENCES Restaurant (RestaurantId) ON DELETE SET NULL
+                                                              ON UPDATE CASCADE,
+    AddressId    INTEGER REFERENCES Address (AddressId) ON DELETE SET NULL
+                                                        ON UPDATE CASCADE,
+    PRIMARY KEY (
+        RestaurantId,
+        AddressId
+    )
+);
+
+
 
 
 DROP TABLE IF EXISTS Category;
@@ -145,8 +172,15 @@ CREATE TABLE ReviewDish (
 );
 
 DROP TABLE IF EXISTS Favorite;
-CREATE TABLE Favorite{
-    CustomerId INT PRIMARY KEY,
-    RetaurantId REFERENCES Restaurant,
-    DishId REFERENCES Dish
-}
+CREATE TABLE Favorite (
+    CustomerId   INTEGER REFERENCES Customer (CustomerId) ON DELETE SET NULL
+                                                          ON UPDATE CASCADE
+                         PRIMARY KEY,
+    RestaurantId INTEGER REFERENCES Restaurant (RestaurantId) ON DELETE SET NULL
+                                                              ON UPDATE CASCADE,
+    DishId       INTEGER REFERENCES Dish (MenuId) ON DELETE SET NULL
+                                                  ON UPDATE CASCADE
+);
+
+
+

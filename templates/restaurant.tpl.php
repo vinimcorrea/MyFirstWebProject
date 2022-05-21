@@ -14,10 +14,10 @@
     <div class="searchRestaurant">
       <p> What you need is here.<br>Ask and receive wherever you are. 
       </p>
-      <form onsubmit="event.preventDefault();" role="search">
-        <label for="search">Search for stuff</label>
+      <form class="mainsearch" onsubmit="event.preventDefault();" role="search">
+        <label class="lb-searchbar" for="search">Search for stuff</label>
         <input id="search" type="search" placeholder="Search..." autofocus required />
-        <button type="submit">Go</button>    
+        <button class="btn-searchbar" type="submit">Go</button>    
       </form>
     </div>
   </header>
@@ -27,7 +27,7 @@
       <div class="rest_items">
         <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->id?>">
         <span class="caption">
-          <a href="restaurant.php?id=<?=$restaurant->id?>">
+          <a href="/../pages/restaurant.php?id=<?=$restaurant->id?>">
               <?=$restaurant->restaurantName?>
           </a>
           <div class="rest_review">
@@ -67,11 +67,16 @@
   <h2 class="MenuName"><?=$menu->menuName?></h2>
     <?php foreach($categories as $category){ ?>
       <h3 class="CategoryName"><?=$category->name?><h3>
-      
         <?php foreach($dishes as $dish) { ?>
+            <?=$dish->categoryId?>
+            <br>
+            <?=$category->categoryId?>
+            <?php if($dish->categoryId === $category->categoryId){ ?>
+  
             <?php DrawDish($dish); ?>
           <?php } ?>
       <?php } ?>
+    <?php } ?>
   </div>
 <?php } ?>
 

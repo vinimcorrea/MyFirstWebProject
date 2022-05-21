@@ -114,31 +114,22 @@ hr {
 }
 
 
-:root {
-  --rad: .7rem;
-  --dur: .3s;
-  --color-dark: #2f2f2f;
-  --color-light: #fff;
-  --color-brand: #ddd;
-  --font-fam: 'Lato', sans-serif;
-  --height: 5rem;
-  --btn-width: 6rem;
-  --bez: cubic-bezier(0, 0, 0.43, 1.49);
-}
-
-
-form {
+.mainsearch {
   position: relative;
   width: 30rem;
   background: var(--color-brand);
   border-radius: var(--rad);
 }
-#search, button {
+
+
+#search{
   height: var(--height);
   font-family: var(--font-fam);
   border: 0;
   color: var(--color-dark);
   font-size: 1.8rem;
+  padding: 1em;
+    background-color: #ddd;
 }
 
 input[type="search"] {
@@ -154,11 +145,6 @@ input[type="search"] {
     position: relative;
   }
 
-
-#search{
-    padding: 1em;
-    background-color: #ddd;
-}
 
 
 header.restBanner img{
@@ -182,7 +168,7 @@ main{
     font-weight: 700;
 }
 
-button {
+.btn-searchbar {
   display: block; 
   text-align: center;
   position: absolute;
@@ -196,9 +182,10 @@ button {
 input:not(:placeholder-shown) {
   border-radius: var(--rad) 0 0 var(--rad);
   width: calc(100% - var(--btn-width));
-
 }
-label {
+
+
+.lb-searchbar {
   position: absolute;
   clip: rect(1px, 1px, 1px, 1px);
   padding: 0;

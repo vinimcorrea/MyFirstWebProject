@@ -4,31 +4,23 @@ declare(strict_types=1);
 class Restaurant {
     public ?int    $restaurantId;
     public ?string $restaurantName;
-    public ?string $street;
-    public ?string $city;
-    public ?string $province;
-    public ?string $country;
-    public ?float  $review;
+    public ?float  $review = 0;
     public ?string $price;
     public ?int    $ownerId;
     public ?int    $categoryId;
 
-    public function __construct(int $id, string $restaurantName, string $street, string $city, string $province, string $country, float $review, string $price, int $ownerId, int $categoryId){
-        $this->id = $id;
+    public function __construct(int $restaurantId, string $restaurantName, float $review, string $price, int $ownerId, int $categoryId){
+        
+        $this->restaurantId = $restaurantId;
         $this->restaurantName = $restaurantName;
-        $this->street = $street;
-        $this->city = $city;
-        $this->province = $province;
-        $this->country = $country;
-        $this->review = $review;
-        $this->price = $price;
-        $this->ownerId = $ownerId;
+        $this->review     = $review;
+        $this->price      = $price;
+        $this->ownerId    = $ownerId;
         $this->categoryId = $categoryId;
-
     }
 
     static function getRestaurants(PDO $db, int $count) : array{
-        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Street, City, Province, Country, Review, Price, OwnerId, CategoryId FROM Restaurant LIMIT ?');
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price FROM Restaurant LIMIT ?');
         $stmt->execute(array($count));
 
         $restaurants = array();
@@ -36,14 +28,8 @@ class Restaurant {
             $restaurants[] = new Restaurant(
                 $restaurant['RestaurantId'],
                 $restaurant['RestaurantName'],
-                $restaurant['Street'],
-                $restaurant['City'],
-                $restaurant['Province'],
-                $restaurant['Country'],
                 $restaurant['Review'],
-                $restaurant['Price'],
-                $restaurant['OwnerId'],
-                $restaurant['CategoryId']
+                $restaurant['Price']
             );
         }
 
@@ -59,7 +45,7 @@ class Restaurant {
     }
 
     static function getRestaurant(PDO $db, int $id) : Restaurant {
-        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Street, City, Province, Country, Review, Price, OwnerId, CategoryId FROM Restaurant WHERE restaurantId = ?');
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price FROM Restaurant WHERE RestaurantId = ?');
         $stmt->execute(array($id));
 
         $restaurant = $stmt->fetch();
@@ -67,16 +53,51 @@ class Restaurant {
         return new Restaurant(
             $restaurant['RestaurantId'],
             $restaurant['RestaurantName'],
-            $restaurant['Street'],
-            $restaurant['City'],
-            $restaurant['Province'],
-            $restaurant['Country'],
             $restaurant['Review'],
-            $restaurant['Price'],
-            $restaurant['OwnerId'],
-            $restaurant['CategoryId']
+            $restaurant['Price']
         );
     }
+
+
+
+
+    static function createRestaurant(PDO $db, User $user, $restaurantName, $review, $price){
+        
+        $stmt = $db-> prepare('
+        INSERT INTO Restaurant(RestaurantName, Review, Price) 
+        VALUES(:RestaurantName, :Review, :Price)'
+         );
+
+        if($stmt->execute([
+            ':RestaurantName' => $restaurantName,
+            ':Review'         => $review,
+            ':Price'          => $price
+        ])){
+        echo "Succesful added record";
+        } else{
+            echo "Error while adding record";
+        }
+
+        $stmt = $db-> prepare('
+        INSERT INTO RestaurantOwner(OwnerId, RestaurantId) 
+        VALUES(:OwnerId, :RestaurantId)'
+         );
+
+        $db->lastInsertId();
+
+        $restaurantId = $db->sqlite_last_insert_rowid();
+
+         if($stmt->execute([
+            ':OwnerId'       => $user->userId,
+            ':RestaurantId'  => $restaurantId,
+        ])){
+        echo "Succesful added record";
+        } else{
+            echo "Error while adding record";
+        }
+
+    }
+
 
 }
 
