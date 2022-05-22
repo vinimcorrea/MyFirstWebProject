@@ -1,50 +1,45 @@
-<?php declare(strict_types = 1); ?>
+<?php declare(strict_types = 1); 
+  require_once(__DIR__ . '/../utils/session.php');
+?>
 
-<?php function drawHeader() { ?>
+<?php function drawHeader(Session $session) { ?>
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <title>Music Shop</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="javascript/script.js" defer></script>
-  </head>
-  <body>
-
-    <header>
-      <h1><a href="/">Music Shop</a></h1>
-      <?php 
-        if (isset($_SESSION['id'])) drawLogoutForm($_SESSION['name']);
-        else drawLoginForm();
-      ?>
-    </header>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/../css/style.css">
+  <title><?= $title ?? 'Home' ?></title>
+</head>
+<body>
   
+  <header class="responsive-header">
+    <a href="index.php" class="logo">CompanyLogo</a>
+  
+
+    <?php if($session->isLoggedin()){?>
+      <div class="login_register">
+        <a href="/../pages/profile.php">Hello, <?= $session->getName() ?></a>
+      </div>
+    <?php } else { ?>
+      <div class="login_register">
+        <a href="/../pages/login.php" class="login">Login</a>
+        <a href="/../pages/register.php" class="register">Register</a>
+      </div>
+    <?php } ?>
+    </header>
+    <hr>
     <main>
 <?php } ?>
 
 <?php function drawFooter() { ?>
     </main>
-
+    <hr>
     <footer>
-      LTW Music Example &copy; 2022
+
+      LTW  &copy; 2022
     </footer>
   </body>
 </html>
-<?php } ?>
-
-<?php function drawLoginForm() { ?>
-  <form action="action_login.php" method="post" class="login">
-    <input type="email" name="email" placeholder="email">
-    <input type="password" name="password" placeholder="password">
-    <a href="register.php">Register</a>
-    <button type="submit">Login</button>
-  </form>
-<?php } ?>
-
-<?php function drawLogoutForm(string $name) { ?>
-  <form action="action_logout.php" method="post" class="logout">
-    <a href="profile.php"><?=$name?></a>
-    <button type="submit">Logout</button>
-  </form>
 <?php } ?>
