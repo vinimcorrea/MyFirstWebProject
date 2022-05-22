@@ -5,19 +5,29 @@
   $session = new Session();
 
   require_once(__DIR__ . '/../database/connection.db.php');
-  require_once(__DIR__ . '/../database/customer.class.php');
+  require_once(__DIR__ . '/../templates/forms.tpl.php');
+  require_once(__DIR__ . '/../database/user.class.php');
 
   $db = getDatabaseConnection();
 
-  $customer = Customer::getCustomerWithPassword($db, $_POST['email'], $_POST['password']);
 
-  if ($customer) {
-    $session->setId($customer->id);
-    $session->setName($customer->name());
-    $session->addMessage('success', 'Login successful!');
-  } else {
-    $session->addMessage('error', 'Wrong password!');
-  }
+    $email = $_POST['login_email'];
+    $password = $_POST['login_pswd'];
 
-  header('Location: ' . $_SERVER['HTTP_REFERER']);
+    $user = User::getUserWithPassword($db, $email, $password);
+
+    if(isset($user)){
+        $session->setEmail($user->email);
+        $session->setName($user->name());
+        $session->setLoginStatus();
+        $session->addMessage('success', 'Login successful!');
+        header('Location: ../index.php');
+    } else {
+        $session->addMessage('error', 'Wrong password!');
+        $_SESSION['error'] = "Invalid username or password";
+        header('Location: ../pages/login.php');
+    }
+
+    header('/../index.php');
+
 ?>

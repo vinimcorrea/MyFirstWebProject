@@ -1,19 +1,17 @@
 <?php
 
 class User{
-    public int $id; 
-    public string $password;
     public string $email;
+    public string $password;
     public string $firstName;
     public string $lastName;
     public string $mobile;
-    public boolean $isOwner;
+    public bool   $isOwner;
     
-    public function __construct(int $id, string $password, string $email, string $firstName, string $lastName, string $mobile, boolean $isOwner){
+    public function __construct(string $email, string $password, string $firstName, string $lastName, string $mobile, bool $isOwner){
         
-        $this->id = $id;
-        $this->password = $password;
         $this->email = $email;
+        $this->password = $password;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->mobile = $mobile;
@@ -26,22 +24,20 @@ class User{
     }
 
     function save($db){
-        $stmt = $db->prepare('
-            UPDATE User SET FirstName = ?, LastName = ?
-            WHERE UserId = ?');
+        $stmt = $db->prepare('UPDATE User SET Password = ?, FirstName = ?, LastName = ?, Mobile = ? WHERE Email = ?');
 
-        $stmt->execute(array($this->firstName, $this->lastName, $this->id));
+        $stmt->execute(array($this->password, $this->firstName, $this->lastName, $this->mobile, $this->email));
     }
 
     
-    static function GetUserByEmail(PDO $db, string $email) : ? User{
-        $stmt = $db-> prepare('
+    static function GetUserWithPassword(PDO $db, string $email, string $password) : ? User{
+        $stmt = $db->prepare('
         SELECT Email, Password, FirstName, LastName, Mobile, isOwner
         FROM User
-        WHERE lower(email) = ? 
+        WHERE Email = ? AND Password = ?
         ');
 
-        $stmt->execute(array(strtolower($email)));
+        $stmt->execute(array($email, $password));
 
         if($user = $stmt->fetch()){
             return new User(
@@ -52,11 +48,32 @@ class User{
                 $user['Mobile'],
                 $user['IsOwner']
             );
-        }
+        } else return null;
     }
 
 
-    static function createUser(PDO $db, $email, $password, $firstName, $lastName, $mobile){
+    static function getUser(PDO $db, string $email) : User {
+        $stmt = $db->prepare('
+            SELECT Email, Password, FirstName, LastName, Mobile, isOwner
+            FROM User
+            WHERE Email = ?
+        ');
+  
+        $stmt->execute(array($email));
+        
+        if($user = $stmt->fetch()){
+            return new User(
+                $user['Email'],
+                $user['Password'],
+                $user['FirstName'],
+                $user['LastName'],
+                $user['Mobile'],
+                $user['IsOwner']
+            );
+        } else return null;
+      }
+
+    static function createUser(PDO $db, $email, $password, $firstName, $lastName, $mobile, $isOwner){
         $stmt = $db-> prepare('
         INSERT INTO User(Email, Password, FirstName, LastName, Mobile, IsOwner) 
         VALUES(:Email, :Password, :FirstName, :LastName, :Mobile, :IsOwner)'
@@ -68,7 +85,7 @@ class User{
             ':FirstName' => $firstName,
             ':LastName'  => $lastName,
             ':Mobile'    => $mobile,
-            ':IsOwner'   => $isOwner
+            ':IsOwner'   => (bool) $isOwner
         ])){
         echo "Succesful added record";
         } else{

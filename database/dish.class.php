@@ -9,9 +9,9 @@ class Dish{
     public ?string   $name;
     public ?float    $price;
     public ?string   $ingredients;
-    public ?boolean  $isVegan;
+    public ?bool     $isVegan;
 
-    public function __construct(int $dishId, int $menuId, int $categoryId, string $name, float $price, string $ingredients, boolean $isVegan){
+    public function __construct(int $dishId, int $menuId, int $categoryId, string $name, float $price, string $ingredients, bool $isVegan){
         $this->dishId = $dishId;
         $this->menuId = $menuId;
         $this->categoryId = $categoryId;

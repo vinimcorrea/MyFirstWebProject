@@ -1,6 +1,8 @@
-<?php declare(strict_types = 1); ?>
+<?php declare(strict_types = 1); 
+  require_once(__DIR__ . '/../utils/session.php');
+?>
 
-<?php function drawHeader() { ?>
+<?php function drawHeader(Session $session) { ?>
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
@@ -14,26 +16,18 @@
   
   <header class="responsive-header">
     <a href="index.php" class="logo">CompanyLogo</a>
-    <!--
-    <div class="responsive-header-container">
-      <button type="button" tabindex="0" class="btn-container">
-        <span class="icon-container">
-          <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="22" height="2" rx="1" fill="#717171">
-            </rect>
-            <rect y="8" width="22" height="2" rx="1" fill="#717171">
-            </rect>
-            <rect y="16" width="22" height="2" rx="1" fill="#717171">
-            </rect>
-          </svg>
-        </span> 
-      </button>
-    </div>
-    -->
-    <div class="login_register">
-      <a href="/../pages/login.php" class="login">Login</a>
-      <a href="/../pages/register.php" class="register">Register</a>
-    </div>
+  
+
+    <?php if($session->isLoggedin()){?>
+      <div class="login_register">
+        <a href="/../pages/profile.php">Hello, <?= $session->getName() ?></a>
+      </div>
+    <?php } else { ?>
+      <div class="login_register">
+        <a href="/../pages/login.php" class="login">Login</a>
+        <a href="/../pages/register.php" class="register">Register</a>
+      </div>
+    <?php } ?>
     </header>
     <hr>
     <main>

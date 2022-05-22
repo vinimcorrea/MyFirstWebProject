@@ -15,18 +15,23 @@
     $db = getDatabaseConnection();
 
 
-    if(isset($_POST['user-type'])){
-        $isOwner = $_POST['user-type'];
-    }
-
-    if($isOwner === "Owner"){
+    if($_POST['owner'] === "Owner"){
         $isOwner = true;
-    }else{
+    } else {
         $isOwner = false;
     }
 
     $user = User::createUser($db, $_POST['email'], $_POST['password'],$_POST['first-name'], $_POST['last-name'], $_POST['mobile'], $isOwner);
 
+    $customer = User::getCustomerWithPassword($db, $_POST['email'], $_POST['password']);
+
+    if ($customer) {
+        $session->setId($customer->id);
+        $session->setName($customer->name());
+        $session->addMessage('success', 'Login successful!');
+      } else {
+        $session->addMessage('error', 'Wrong password!');
+      }
     
-      header("../pages/index.php");
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>
