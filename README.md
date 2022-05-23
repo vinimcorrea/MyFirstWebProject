@@ -1,24 +1,6 @@
 # ltw-t02-g09
 
-# TO DO LIST (due to next thursday, 19th May)
 
-* AFONSO
-- [ ] login and register users.
-- [ ] take care of 3 kinds of users: (owner, user, deliver)
-
-* LUÍS
-- [ ] mockups and diagrams.
-
-* VINÍCIUS
-- [ ] classes development.
-- [ ] css.
-- [ ] connection to database.
-
-</br>
-</br>
-</br>
-</br></br>
-</br>
 
 
 
