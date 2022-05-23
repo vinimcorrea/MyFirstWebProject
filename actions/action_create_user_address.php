@@ -28,9 +28,7 @@
         ':AddressId'   => $id   
     ]);
 
-    $haveAddress = true;
-    $user->setAddressStatus($haveAddress);
-    $session->setHaveAddress();
+    $user->setHaveAddress($db, true);
 
     header('Location: ../pages/profile.php');
 ?>

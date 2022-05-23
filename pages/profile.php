@@ -20,7 +20,7 @@
   $address = Address::getAddressWithEmail($db, $session->getEmail());
 
   drawHeader($session);
-  drawProfile($session, $user, $address);
+  drawProfile($db, $user, $address);
   drawFooter();
 
 ?>

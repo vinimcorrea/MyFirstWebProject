@@ -3,7 +3,7 @@
 
 ?>
 
-<?php function drawProfile(Session $session, User $user, $address){ ?>
+<?php function drawProfile(PDO $db, User $user, $address){ ?>
 
     <section>
         <div>
@@ -19,7 +19,7 @@
             <?= $user->mobile ?>
         </div>
 
-        <?php if($session->haveAddress()){ ?>
+        <?php if($user->getAddressStatus($db)){ ?>
             <div>
                 <a href="../pages/address.php" class="edit_profile">Update Address</a>
             </div>

@@ -34,14 +34,6 @@
       $_SESSION['name'] = $name;
     }
 
-    public function haveAddress() : ? bool{
-      return isset($_SESSION['address_status']);
-    }
-
-    public function setHaveAddress() {
-      $_SESSION['address_status'] = true;
-    }
-
     public function addMessage(string $type, string $text) {
       $_SESSION['messages'][] = array('type' => $type, 'text' => $text);
     }

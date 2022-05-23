@@ -7,7 +7,7 @@ class User{
     public string $lastName;
     public string $mobile;
     public bool   $isOwner;
-    public bool   $haveAddress = false;
+    public bool   $haveAddress;
     
     public function __construct(string $email, string $password, string $firstName, string $lastName, string $mobile, bool $isOwner){
         
@@ -19,19 +19,31 @@ class User{
         $this->isOwner = $isOwner;
     }
 
-    function setAddressStatus(bool $haveAddress){
-        $this->$haveAddress = $haveAddress;
+    function getAddressStatus(PDO $db) : bool{
+        $stmt = $db->prepare('
+        SELECT HaveAddress
+        FROM User
+        WHERE Email = ?
+        ');
+
+        $stmt->execute(array($this->email));
+
+        if($isAddress = $stmt->fetch()){
+            return $isAddress['HaveAddress'];
+        }
     }
 
-    function haveAddress(){
-        return $this->$haveAddress;
+    function setHaveAddress(PDO $db, bool $haveAddress){
+        $stmt = $db->prepare('UPDATE User SET HaveAddress = ? WHERE Email = ?');
+
+        $stmt->execute(array($haveAddress, $this->email));
     }
 
     function name(){
         return $this->firstName . ' ' . $this->lastName;
     }
 
-    function save($db){
+    function save(PDO $db){
         $stmt = $db->prepare('UPDATE User SET Password = ?, FirstName = ?, LastName = ?, Mobile = ? WHERE Email = ?');
 
         $stmt->execute(array($this->password, $this->firstName, $this->lastName, $this->mobile, $this->email));
