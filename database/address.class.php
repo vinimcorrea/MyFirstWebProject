@@ -20,7 +20,7 @@ class Address {
     }
 
 
-    static function getAddress(PDO $db, int $id) : Address {
+    static function getAddress(PDO $db, string $email) : Address {
         $stmt = $db->prepare('SELECT AddressId, AddressLineOne, AddressLineTwo, City, Country, postalcode FROM Address WHERE AddressId = ?');
         $stmt->execute(array($id));
 
@@ -34,6 +34,13 @@ class Address {
             $address['Country'],
             $address['postalcode']
         );
+    }
+
+
+    function save(PDO $db){
+        $stmt = $db->prepare('UPDATE Address SET AddressLineOne = ?, AddressLineTwo = ?, City = ?, Country = ?, postalcode = ? WHERE AddressId = ?');
+
+        $stmt->execute(array($this->addressOne, $this->addressTwo, $this->city, $this->country, $this->postalcode, $this->id));
     }
 
     static function createAddress(PDO $db,string $addressOne, string $addressTwo, string $city, string $country, string $postalcode){

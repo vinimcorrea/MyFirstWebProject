@@ -170,9 +170,13 @@
 <?php } ?>
 
 
-<?php function drawAddressForm(){ ?>
+<?php function drawAddressForm(PDO $db, User $user){ ?>
   <h2>Address</h2>
-  <form action="/../actions/action_create_user_address.php" method="post" class="profile">
+  <?php if($user->getAddressStatus($db)){ ?>
+    <form action="/../actions/action_edit_user_address.php" method="post" class="profile">
+  <?php } else { ?>
+    <form action="/../actions/action_create_user_address.php" method="post" class="profile">
+  <?php } ?>
 
     <div class="address-form">
       <div>
