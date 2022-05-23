@@ -23,7 +23,6 @@
         header('Location: ../index.php');
     } else {
         $session->addMessage('error', 'Wrong password!');
-        $_SESSION['error'] = "Invalid username or password";
         header('Location: ../pages/login.php');
     }
 

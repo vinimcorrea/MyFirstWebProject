@@ -97,3 +97,29 @@
   </li>
 
 <?php } ?>
+
+
+<?php function drawOwnerRestaurants(array $restaurants, array $categories){ ?>
+  <h3 id="title_rest"> My Restaurants </h3>
+  <section id="restaurants">
+    <?php foreach($restaurants as $restaurant) { ?>
+      
+      <div class="rest_items">
+        <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->id?>">
+        <span class="caption">
+          <a href="/../pages/restaurant.php?id=<?=$restaurant->id?>">
+              <?=$restaurant->restaurantName?>
+          </a>
+          <div class="rest_review">
+          <?=$restaurant->review?>
+          </div>
+          <?php $db = getDatabaseConnection(); ?>
+          <?php $category = Category::getCategory($db, $restaurant->categoryId)?>
+          <p><?=$category->name?></p>
+        </span>
+      </div>
+      </article>
+    <?php } ?>
+  </section>
+
+<?php } ?>

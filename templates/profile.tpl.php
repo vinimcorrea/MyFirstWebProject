@@ -56,7 +56,7 @@
 
         <?php if($user->isOwner){ ?>
             <div>
-                <a href="../pages/address.php" class="edit_profile">Your restaurants</a>
+                <a href="../pages/add_restaurant.php" class="edit_profile">Add restaurant</a>
             </div>  
         <?php } ?>
 

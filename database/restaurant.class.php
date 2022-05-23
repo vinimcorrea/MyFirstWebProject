@@ -6,17 +6,13 @@ class Restaurant {
     public ?string $restaurantName;
     public ?float  $review = 0;
     public ?string $price;
-    public ?int    $ownerId;
-    public ?int    $categoryId;
 
-    public function __construct(int $restaurantId, string $restaurantName, float $review, string $price, int $ownerId, int $categoryId){
+    public function __construct(int $restaurantId, string $restaurantName, float $review, string $price){
         
         $this->restaurantId = $restaurantId;
         $this->restaurantName = $restaurantName;
         $this->review     = $review;
         $this->price      = $price;
-        $this->ownerId    = $ownerId;
-        $this->categoryId = $categoryId;
     }
 
     static function getRestaurants(PDO $db, int $count) : array{
@@ -59,9 +55,46 @@ class Restaurant {
     }
 
 
+    static function getOwnerRestaurant(PDO $db, string $id) : Restaurant {
+        $stmt = $db->prepare('SELECT Restaurant.RestaurantId, RestaurantName, Review, Price 
+        FROM Restaurant, RestaurantOwner 
+        WHERE Restaurant.RestaurantId = RestaurantOwner.RestaurantId AND OwnerId = ?');
+        $stmt->execute(array($id));
+
+        $restaurant = $stmt->fetch();
+
+        return new Restaurant(
+            $restaurant['RestaurantId'],
+            $restaurant['RestaurantName'],
+            $restaurant['Review'],
+            $restaurant['Price']
+        );
+    }
+
+    static function getOwnerRestaurants(PDO $db, string $id) : array {
+        $stmt = $db->prepare('SELECT Restaurant.RestaurantId, RestaurantName, Review, Price 
+        FROM Restaurant, RestaurantOwner 
+        WHERE Restaurant.RestaurantId = RestaurantOwner.RestaurantId 
+        AND OwnerId = ?');
+        $stmt->execute(array($id));
+
+        $restaurants = array();
+        while ($restaurant = $stmt->fetch()) {
+            $restaurants[] = new Restaurant(
+                $restaurant['RestaurantId'],
+                $restaurant['RestaurantName'],
+                $restaurant['Review'],
+                $restaurant['Price']
+            );
+        }
+
+        return $restaurants;
+    }
 
 
-    static function createRestaurant(PDO $db, User $user, $restaurantName, $review, $price){
+
+
+    static function createRestaurant(PDO $db, User $user, string $restaurantName,string $review, string $price){
         
         $stmt = $db-> prepare('
         INSERT INTO Restaurant(RestaurantName, Review, Price) 
@@ -83,13 +116,11 @@ class Restaurant {
         VALUES(:OwnerId, :RestaurantId)'
          );
 
-        $db->lastInsertId();
-
-        $restaurantId = $db->sqlite_last_insert_rowid();
+        $id = $db->lastInsertId();
 
          if($stmt->execute([
-            ':OwnerId'       => $user->userId,
-            ':RestaurantId'  => $restaurantId,
+            ':OwnerId'       => $user->email,
+            ':RestaurantId'  => $id,
         ])){
         echo "Succesful added record";
         } else{

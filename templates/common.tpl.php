@@ -19,6 +19,9 @@
   
 
     <?php if($session->isLoggedin()){?>
+      <div class="user-orders">
+        <a href="/../index.php">My Orders</a>
+      </div>
       
       <div class="login_register">
         <a href="/../pages/profile.php">Hello, <?= $session->getName() ?></a>

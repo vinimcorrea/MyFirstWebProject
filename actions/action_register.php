@@ -28,7 +28,7 @@
     $email    = $_POST['email'];
     $password = $_POST['password'];
 
-    $user = User::createUser($db, $email, $password, $_POST['first-name'], $_POST['last-name'], $_POST['mobile'], $isOwner);
+    User::createUser($db, $email, $password, $_POST['first-name'], $_POST['last-name'], $_POST['mobile'], $isOwner);
 
     $userLogged = User::getUserWithPassword($db, $email, $password);
     

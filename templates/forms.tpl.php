@@ -55,6 +55,7 @@
     <input type="password" name="login_pswd" id= "login_pswd" placeholder="password">
     <button type="submit" name="login">Login</button>
   </form>
+
   <a href="register.php">Register</a>   
 <?php } ?>
 
@@ -76,10 +77,17 @@
       <input type="text" placeholder="name" name="rest-name" required>
     </div>
 
+
+    <div>
+      <label for="rest-review">Review:</label>
+      <input type="text" placeholder="price" name="rest-review" required>  
+    </div>
+
     <div>
       <label for="rest-price">Price:</label>
       <input type="text" placeholder="price" name="rest-price" required>  
     </div>
+    
     
 
     <div>
@@ -97,12 +105,12 @@
       <input type="text" name="rest-city" placeholder="city" required>
     </div>
 
-    div>
+    <div>
       <label for="rest-country">Country:</label>
       <input type="text" name="rest-country" placeholder="country" required>
     </div>
 
-    div>
+    <div>
       <label for="rest-postalcode">Postalcode:</label>
       <input type="tel" name="rest-postalcode" placeholder="4465-163" pattern="[0-9]{4}-[0-9]{3}" required>
     </div>
