@@ -13,6 +13,6 @@
 
 
   drawHeader($session);
-  drawRegisterForm();
+  drawAddressForm();
   drawFooter();
 ?>

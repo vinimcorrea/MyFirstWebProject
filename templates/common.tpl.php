@@ -19,6 +19,7 @@
   
 
     <?php if($session->isLoggedin()){?>
+      
       <div class="login_register">
         <a href="/../pages/profile.php">Hello, <?= $session->getName() ?></a>
       </div>

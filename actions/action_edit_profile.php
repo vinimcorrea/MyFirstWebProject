@@ -21,7 +21,7 @@
     $user->password  = $_POST['edit-password'];
     $user->mobile    = $_POST['edit-mobile'];
 
-    echo "<p> $user->firstName, $user->lastName, $user->password, $user->mobile </p>";
+      
     $session->setName($user->name());
 
     $user->save($db);

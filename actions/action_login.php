@@ -19,7 +19,6 @@
     if(isset($user)){
         $session->setEmail($user->email);
         $session->setName($user->name());
-        $session->setLoginStatus();
         $session->addMessage('success', 'Login successful!');
         header('Location: ../index.php');
     } else {
@@ -27,7 +26,5 @@
         $_SESSION['error'] = "Invalid username or password";
         header('Location: ../pages/login.php');
     }
-
-    header('/../index.php');
 
 ?>

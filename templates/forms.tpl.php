@@ -163,8 +163,44 @@
     <input id="edit-last-name" type="text" name="edit-last-name" placeholder="<?=$user->lastName?>">  
 
     <label for="edit-mobile">Mobile:</label>
-    <input type="tel" placeholder="(+351) <?=$user->mobile?>" name="edit-mobile" pattern="[0-9]{9}" required>
+    <input type="tel" placeholder="(+351) <?=$user->mobile?>" name="edit-mobile" pattern="[0-9]{9}">
     
     <button type="submit">Save</button>
+  </form>
+<?php } ?>
+
+
+<?php function drawAddressForm(){ ?>
+  <h2>Address</h2>
+  <form action="/../actions/action_create_user_address.php" method="post" class="profile">
+
+    <div class="address-form">
+      <div>
+        <label for="add-one-lb">Address Line One: *</label>
+        <input id="add-one" type="text" name="add-one" required>
+      </div>
+
+      <div>
+        <label for="add-two-lb">Address Line Two:</label>
+        <input id="add-two" type="text" name="add-two">
+      </div>
+
+      <div>
+        <label for="add-city-lb">City: *</label>
+        <input id="add-city" type="text" name="add-city" required>  
+      </div>
+
+      <div>
+        <label for="add-country-lb">Country: *</label>
+        <input id="add-country" type="text" name="add-country" required>
+      </div>
+
+      <div>
+        <label for="add-pc-lb">postalcode: *</label>
+        <input type="add-pc" name="add-pc" pattern="[0-9]{4}-[0-9]{3}" required>  
+      </div>
+
+      <button type="submit">Save</button>
+    </div>
   </form>
 <?php } ?>

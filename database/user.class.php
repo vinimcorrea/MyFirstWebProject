@@ -7,6 +7,7 @@ class User{
     public string $lastName;
     public string $mobile;
     public bool   $isOwner;
+    public bool   $haveAddress = false;
     
     public function __construct(string $email, string $password, string $firstName, string $lastName, string $mobile, bool $isOwner){
         
@@ -16,7 +17,14 @@ class User{
         $this->lastName = $lastName;
         $this->mobile = $mobile;
         $this->isOwner = $isOwner;
-        
+    }
+
+    function setAddressStatus(bool $haveAddress){
+        $this->$haveAddress = $haveAddress;
+    }
+
+    function haveAddress(){
+        return $this->$haveAddress;
     }
 
     function name(){
@@ -126,6 +134,8 @@ class User{
         ]);    
 
     }
+        
+
 }
 
 ?>

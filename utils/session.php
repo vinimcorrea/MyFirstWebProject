@@ -14,7 +14,7 @@
     }
 
     public function logout() {
-      session_unset();
+      //session_unset();
       session_destroy();
     }
 
@@ -34,16 +34,12 @@
       $_SESSION['name'] = $name;
     }
 
-    public function getLoginStatus() : ? bool{
-      return isset($_SESSION['login_status']) ? $_SESSION['login_status'] : null;
+    public function haveAddress() : ? bool{
+      return isset($_SESSION['address_status']);
     }
 
-    public function setLoginStatus() {
-      $_SESSION['login_status'] = true;
-    }
-
-    public function setLogoutStatus() {
-      $_SESSION['login_status'] = false;
+    public function setHaveAddress() {
+      $_SESSION['address_status'] = true;
     }
 
     public function addMessage(string $type, string $text) {

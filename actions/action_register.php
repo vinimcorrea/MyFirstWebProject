@@ -25,8 +25,21 @@
         $isOwner = false;
     }
 
-    $user = User::createUser($db, $_POST['email'], $_POST['password'],$_POST['first-name'], $_POST['last-name'], $_POST['mobile'], $isOwner);
+    $email    = $_POST['email'];
+    $password = $_POST['password'];
 
+    $user = User::createUser($db, $email, $password, $_POST['first-name'], $_POST['last-name'], $_POST['mobile'], $isOwner);
+
+    $userLogged = User::getUserWithPassword($db, $email, $password);
     
-      header("../pages/index.php");
+    if(isset($userLogged)){
+        $session->setEmail($userLogged->email);
+        $session->setName($userLogged->name());
+        $session->addMessage('success', 'Login successful!');
+        header('Location: ../index.php');
+    } else {
+        $session->addMessage('error', 'Wrong password!');
+        $_SESSION['error'] = "Invalid username or password";
+        header('Location: ../pages/login.php');
+    }
 ?>
