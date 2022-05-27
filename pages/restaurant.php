@@ -1,7 +1,8 @@
 <?php
   declare(strict_types = 1);
 
-  session_start();
+  require_once(__DIR__ . '/../utils/session.php');
+  $session = new Session();
 
   require_once(__DIR__ . '/../database/connection.db.php');
 
@@ -21,7 +22,7 @@
   $dishes     = Dish::getDishes($db, 3);
   $categories  = Category::getCategories($db, 3);
 
-  drawHeader();
+  drawHeader($session);
   drawRestaurant($restaurant, $menus, $categories, $dishes);
   drawFooter();                                                                                                                       
 ?>

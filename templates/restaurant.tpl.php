@@ -25,9 +25,9 @@
   <section id="restaurants">
     <?php foreach($restaurants as $restaurant) { ?> 
       <div class="rest_items">
-        <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->id?>">
+        <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->restaurantId?>">
         <span class="caption">
-          <a href="/../pages/restaurant.php?id=<?=$restaurant->id?>">
+          <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
               <?=$restaurant->restaurantName?>
           </a>
           <div class="rest_review">
@@ -44,11 +44,20 @@
 <?php } ?>
 
 <?php function drawRestaurant(Restaurant $restaurant, array $menus, array $categories, array $dishes) { ?>
+  <div>
+    <a href="">edit restaurant</a>
+  </div>
+
+  <div>
+    <a href="../pages/add_dish.php">add dish</a>
+  </div>
+
+
   <header class="restBanner">
-    <img src="https://picsum.photos/200?" alt="banner" <?=$restaurant->id?>">
+    <img src="https://picsum.photos/200?" alt="banner" <?=$restaurant->restaurantId?>">
   </header>
   <div class="rest_design">
-    <img src="https://picsum.photos/200?" alt="Screen 1" <?=$restaurant->id?>">
+    <img src="https://picsum.photos/200?" alt="Screen 1" <?=$restaurant->restaurantId?>">
     <h1 class="RestaurantName"><?=$restaurant->restaurantName?></h1>
     <p id="reviewRest"><?=$restaurant->review?> </p>
   
@@ -105,9 +114,9 @@
     <?php foreach($restaurants as $restaurant) { ?>
       
       <div class="rest_items">
-        <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->id?>">
+        <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->restaurantId?>">
         <span class="caption">
-          <a href="/../pages/restaurant.php?id=<?=$restaurant->id?>">
+          <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
               <?=$restaurant->restaurantName?>
           </a>
           <div class="rest_review">

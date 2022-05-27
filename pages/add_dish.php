@@ -12,10 +12,8 @@
   require_once(__DIR__ . '/../templates/forms.tpl.php');
 
   $db = getDatabaseConnection();
-  $categories  = Category::getCategories($db, 3);
-
 
   drawHeader($session);
-  drawRestaurantForm($categories);
+  drawDishForm();
   drawFooter();                                                                                                                       
 ?>

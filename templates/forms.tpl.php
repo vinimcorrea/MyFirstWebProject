@@ -67,7 +67,7 @@
   </form>
 <?php } ?>
 
-<?php function drawRestaurantForm(){ ?>
+<?php function drawRestaurantForm(array $categories){ ?>
   <form action="../actions/action_create_restaurant.php" method="post">
   <div class="container">
     <h1>Add Your Restaurant</h1>
@@ -88,7 +88,14 @@
       <input type="text" placeholder="price" name="rest-price" required>  
     </div>
     
-    
+    <div>
+    <label for="rest-category">Category:</label>
+        <select name="rest-category">
+            <?php foreach($categories as $category){ ?>
+              <option value="<?=$category->name?>"><?=$category->name?></option>
+            <?php } ?>
+        </select>
+    </div>  
 
     <div>
       <label for="rest-addr-one">Address Line One:</label>
@@ -126,7 +133,7 @@
 <?php function drawDishForm(){ ?>
   <form action="../actions/action_create_dish.php" method="post">
   <div class="container">
-    <h1>Add Your Restaurant</h1>
+    <h1>Add Dish</h1>
 
     <div>
       <label for="rest-name">Name:</label>
@@ -146,11 +153,16 @@
 
     <div>
       <label for="dish-vegan">Vegan:</label>
-      <input type="radio" id="isvegan" name="dish-vegan-yes" value="yes">
-      <input type="radio" id="isvegan" name="dish-vegan-no" value="no">
-    
+        <input type="radio" id="isvegan" name="dish-vegan-yes" value="yes">
+        <input type="radio" id="isvegan" name="dish-vegan-no" value="no">
+      </label>
     <div>
-      <p>create dish</p>
+
+    <div>
+      <label for="dish-ing">Description:</label>
+      <input type="text" name="dish-ing">
+    </div> 
+
       <button type="submit" class="registerbtn">submit</button>
     </div>
 </form>

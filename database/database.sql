@@ -192,5 +192,15 @@ CREATE TABLE UserAddress (
     )
 );
 
-
+DROP TABLE IF EXISTS RestaurantCategory;
+CREATE TABLE RestaurantCategory (
+    CategoryId   INTEGER REFERENCES Category (CategoryId) ON DELETE SET NULL
+                                                          ON UPDATE CASCADE,
+    RestaurantId INTEGER REFERENCES Restaurant (RestaurantId) ON DELETE SET NULL
+                                                              ON UPDATE CASCADE,
+    PRIMARY KEY (
+        CategoryId,
+        RestaurantId
+    )
+);
 

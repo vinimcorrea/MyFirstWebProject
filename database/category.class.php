@@ -47,6 +47,31 @@ class Category {
         );
     }
 
+    static function getCategoryByName(PDO $db, string $name) : Category {
+        $stmt = $db->prepare('SELECT CategoryId, name FROM Category WHERE name = ?');
+        $stmt->execute(array($name));
+
+        $category = $stmt->fetch();
+
+        return new Category(
+            $category['CategoryId'],
+            $category['name']
+        );
+    }
+
+    static function getRestaurantCategory(PDO $db, int $id) : Category {
+        $stmt = $db->prepare('SELECT Category.CategoryId, name
+        FROM Category, RestaurantCategory 
+        WHERE Category.CategoryId = RestaurantCategory.CategoryId AND RestaurantId = ?');
+        $stmt->execute(array($id));
+
+        $category = $stmt->fetch();
+
+        return new Category(
+            $category['CategoryId'],
+            $category['name']
+        );
+    }
 }
 
 ?>
