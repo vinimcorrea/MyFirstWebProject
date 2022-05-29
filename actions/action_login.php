@@ -16,6 +16,12 @@
 
     $user = User::getUserWithPassword($db, $email, $password);
 
+    if($user->isOwner){
+        $session->setOwner();
+    } else {
+        $session->setCustomer();
+    }
+
     if(isset($user)){
         $session->setEmail($user->email);
         $session->setName($user->name());

@@ -12,7 +12,7 @@
     require_once(__DIR__ . '/../database/user.class.php');
     require_once(__DIR__ . '/../database/restaurant.class.php');
     require_once(__DIR__ . '/../database/category.class.php');
-    require_once(__DIR__ . '/../database/address.class.php');
+    require_once(__DIR__ . '/../database/dish.class.php');
 
 
     require_once(__DIR__ . '/../templates/forms.tpl.php');
@@ -20,28 +20,29 @@
     $db = getDatabaseConnection();
 
     $user = User::getUser($db, $session->getEmail());
-    //if (!$user->IsOwner) die(header('Location: ../pages/profile.php')); // add 404 page not found
 
 
-    $add = Address::createAddress($db, $_POST['rest-addr-one'], $_POST['rest-addr-two'],$_POST['rest-city'], $_POST['rest-country'], $_POST['rest-postalcode']);
+    $categories  = Category::getCategories($db, 3);
+    foreach($categories as $category){
+        if($category->name == $_POST['dish-categ']){
+            $categoryId = $category->categoryId;
+            $need = true;
+        }
+    }
 
-    $Addressid = $db->lastInsertId();
+    if(!$need){
+        $category = Category::createCategory($db, $_POST['dish-categ']);
+        $categoryId = $db->lastInsertId();
+    }
 
-    $category = Category::getCategoryByName($db, $_POST['rest-category']);
+    $vegan_dish = false;
 
-    $restaurant = Restaurant::createRestaurant($db, $user, $_POST['rest-name'], $_POST['rest-review'], $_POST['rest-price'], $category->categoryId);
+    if(!empty($_POST['dish-vegan'])){
+        $dish = Dish::createDish($db, $_POST['dish-name'], $_POST['dish-price'], $_POST['dish-ing'], boolval(1), $categoryId, $_SESSION['id']);
+    } else {
+        $dish = Dish::createDish($db, $_POST['dish-name'], $_POST['dish-price'], $_POST['dish-ing'], boolval(0), $categoryId, $_SESSION['id']);
+    }
 
-    $RestaurantId = $db->lastInsertId();
 
-    $stmt = $db-> prepare('
-        INSERT INTO RestaurantAddress(RestaurantId, AddressId) 
-        VALUES(:RestaurantId, :AddressId)'
-    );
-
-    $stmt->execute([
-        ':RestaurantId' => $RestaurantId,
-        ':AddressId'    => $Addressid   
-    ]);
-
-    header('Location: ../pages/profile.php');
+    header('Location: ../pages/restaurant.php?id=' . $_SESSION['id']);
 ?>

@@ -130,7 +130,7 @@
 
 <?php } ?>
 
-<?php function drawDishForm(){ ?>
+<?php function drawDishForm(array $categories){ ?>
   <form action="../actions/action_create_dish.php" method="post">
   <div class="container">
     <h1>Add Dish</h1>
@@ -142,29 +142,30 @@
 
     <div>
       <label for="dish-price">Price:</label>
-      <input type="text" placeholder="price" name="dish-price" required>  
+      <input type="text" placeholder="€" name="dish-price" required>  
     </div>
     
 
     <div>
       <label for="dish-ing">Ingredients:</label>
       <input type="text" name="dish-ing" required>
-    </div> 
+    </div>
+
+    <label for="dishes-categ">Category:</label>
+    <input list="categ" id="categ" name="dish-categ" required/>
+    <datalist id="categ">
+      <?php foreach($categories as $category){ ?>
+        <option value="<?=$category->name?>">
+      <?php } ?>  
+    </datalist>
 
     <div>
       <label for="dish-vegan">Vegan:</label>
-        <input type="radio" id="isvegan" name="dish-vegan-yes" value="yes">
-        <input type="radio" id="isvegan" name="dish-vegan-no" value="no">
+        <input type="checkbox" id="isvegan" name="dish-vegan" value="yes">
       </label>
     <div>
 
-    <div>
-      <label for="dish-ing">Description:</label>
-      <input type="text" name="dish-ing">
-    </div> 
-
-      <button type="submit" class="registerbtn">submit</button>
-    </div>
+    <button type="submit">Submit</button>
 </form>
 
 <?php } ?>
@@ -226,5 +227,16 @@
 
       <button type="submit">Save</button>
     </div>
+  </form>
+<?php } ?>
+
+<?php function drawOrderForm() { ?>
+  <form action="../actions/action_edit_profile.php" method="post" class="profile">
+    <h2>My Order</h2>
+    <div>
+      <label for="add-note-order">Leave a Note: </label>
+      <input type="text" name="add-note-order">  
+    </div>
+    <button type="submit">Save</button>
   </form>
 <?php } ?>

@@ -43,14 +43,18 @@
   </section>
 <?php } ?>
 
-<?php function drawRestaurant(Restaurant $restaurant, array $menus, array $categories, array $dishes) { ?>
-  <div>
-    <a href="">edit restaurant</a>
-  </div>
+<?php function drawRestaurant(Restaurant $restaurant, array $categories, array $dishes, Address $address, bool $isOwner) { ?>
 
-  <div>
-    <a href="../pages/add_dish.php">add dish</a>
-  </div>
+  <?php if($isOwner) {?>
+    <div> 
+      <a href="">edit restaurant</a>
+    </div>
+
+    <div>
+      <a href="../pages/add_dish.php">add dish</a>
+    </div>
+  <?php } ?>
+
 
 
   <header class="restBanner">
@@ -63,29 +67,43 @@
   
   </div>
 
+  <div>
+                <?= $address->addressOne ?>
+            </div>
+
+            <div>
+                <?= $address->addressTwo ?>
+            </div>
+
+            <div>
+                <?= $address->city?>
+            </div>
+
+            <div>
+                <?= $address->country?>
+            </div>
+
+            <div>
+                <?= $address->postalcode?>
+          </div>
+  </div>
+
   <section id="restaurants">
   <input id="search" type="search" placeholder="Search..." autofocus required/>
-    <?php foreach($menus as $menu) { ?>
-      <?php drawMenu($menu, $dishes, $categories); ?>
+    <?php foreach($categories as $category) { ?>
+      <?php drawCategory($category, $dishes); ?>
       <?php } ?>
   </section>
 <?php } ?>
 
-<?php function drawMenu(Menu $menu, array $dishes, array $categories){ ?>
-  <div class="RestaurantMenu">
-  <h2 class="MenuName"><?=$menu->menuName?></h2>
-    <?php foreach($categories as $category){ ?>
-      <h3 class="CategoryName"><?=$category->name?><h3>
-        <?php foreach($dishes as $dish) { ?>
-            <?=$dish->categoryId?>
-            <br>
-            <?=$category->categoryId?>
-            <?php if($dish->categoryId === $category->categoryId){ ?>
-  
+<?php function drawCategory(Category $category, array $dishes){ ?>
+      <?php foreach($dishes as $dish) { ?>
+          <?php if($dish->categoryId === $category->categoryId){ ?>
+            <div class="RestaurantCategory">
+            <h2 class="CategoryName"><?=$category->name?></h2>
             <?php DrawDish($dish); ?>
           <?php } ?>
       <?php } ?>
-    <?php } ?>
   </div>
 <?php } ?>
 
@@ -98,13 +116,17 @@
       <?=$dish->ingredients?>
     </span>
     <span class="DishPrice">
-      <?=number_format($dish->price, 2, '.', '')?>
+      <?=number_format($dish->price, 2, '.', '')?> €
     </span>
     <span class="DishIsVegan">
       <?=$dish->isVegan?>
     </span> 
-  </li>
-
+  </li> 
+  <form action="../actions/action_create_restaurant.php" method="post">
+  <input type="number"name="rest-name" required>
+  <button type="submit" class="registerbtn">Purchase</button>
+  </form>
+  
 <?php } ?>
 
 

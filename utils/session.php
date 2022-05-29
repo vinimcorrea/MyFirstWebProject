@@ -34,6 +34,18 @@
       $_SESSION['name'] = $name;
     }
 
+    public function isOwner() {
+      return $_SESSION['isOwner'];
+    }
+
+    public function setOwner(){
+      $_SESSION['isOwner'] = true;
+    }
+
+    public function setCustomer(){
+      $_SESSION['isOwner'] = false;
+    }
+
     public function addMessage(string $type, string $text) {
       $_SESSION['messages'][] = array('type' => $type, 'text' => $text);
     }

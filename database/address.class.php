@@ -82,6 +82,29 @@ class Address {
             );
         } else return null;
     }  
+
+    static function getAddressWithResId(PDO $db, int $id) {
+        
+        $stmt = $db->prepare('
+        SELECT Address.AddressId, AddressLineOne, AddressLineTwo, City, Country, postalcode 
+        FROM Address, RestaurantAddress  
+        WHERE Address.AddressId = RestaurantAddress.AddressId 
+        AND RestaurantAddress.RestaurantId = ?
+        ');
+  
+        $stmt->execute(array($id));
+        
+        if($address = $stmt->fetch()){
+            return new Address(
+                $address['AddressId'],
+                $address['AddressLineOne'],
+                $address['AddressLineTwo'],
+                $address['City'],
+                $address['Country'],
+                $address['postalcode']
+            );
+        } else return null;
+    }
     
 }
 ?>

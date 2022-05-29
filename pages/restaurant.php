@@ -9,6 +9,8 @@
   require_once(__DIR__ . '/../database/restaurant.class.php');
   require_once(__DIR__ . '/../database/menu.class.php');
   require_once(__DIR__ . '/../database/category.class.php');
+  require_once(__DIR__ . '/../database/user.class.php');
+  require_once(__DIR__ . '/../database/address.class.php');
   require_once(__DIR__ . '/../database/dish.class.php');
 
 
@@ -17,12 +19,28 @@
 
   $db = getDatabaseConnection();
 
+  $restaurantOwner = false;
+
+
+  $ownerId = Restaurant::getRestaurantOwnerId($db, intval($_GET['id']));
+
+  if($session->isLoggedIn()){
+    if($ownerId == $session->getEmail()){
+      $restaurantOwner = true;
+    }
+  }
+
   $restaurant = Restaurant::getRestaurant($db, intval($_GET['id']));
   $menus      = Menu::getMenus($db, 3);
-  $dishes     = Dish::getDishes($db, 3);
-  $categories  = Category::getCategories($db, 3);
+
+  $address = Address::getAddressWithResId($db, intval($_GET['id']));
+
+  $dishes      = Dish::getRestaurantDishes($db, $restaurant->restaurantId);
+  $categories  = Category::getCategories($db, 10);
+
+  $_SESSION['id'] = $restaurant->restaurantId;
 
   drawHeader($session);
-  drawRestaurant($restaurant, $menus, $categories, $dishes);
+  drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner);
   drawFooter();                                                                                                                       
 ?>

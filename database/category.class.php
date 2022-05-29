@@ -27,6 +27,23 @@ class Category {
         return $categories;
     }
 
+    static function getCategoriesWithDishes(PDO $db, int $count) : array{
+        $stmt = $db->prepare('SELECT CategoryId, name 
+        FROM Category JOIN Dish
+        LIMIT ?');
+        $stmt->execute(array($count));
+
+        $categories = array();
+        while ($category = $stmt->fetch()) {
+            $categories[] = new Category(
+                $category['CategoryId'],
+                $category['name']
+            );
+        }
+
+        return $categories;
+    }
+
     function save($db){
         $stmt = $db->prepare('
             UPDATE Category SET name = ?
@@ -71,6 +88,17 @@ class Category {
             $category['CategoryId'],
             $category['name']
         );
+    }
+
+    static function createCategory(PDO $db, $name){
+        $stmt = $db-> prepare('
+        INSERT INTO Category(Name) 
+        VALUES(:Name)'
+         );
+
+        $stmt->execute([
+            ':Name'         => $name
+        ]); 
     }
 }
 

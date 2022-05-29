@@ -77,6 +77,18 @@ class Restaurant {
         );
     }
 
+
+    static function getRestaurantOwnerId(PDO $db, int $id) : string {
+        $stmt = $db->prepare('SELECT OwnerId 
+        FROM RestaurantOwner
+        WHERE RestaurantId = ?');
+        $stmt->execute(array($id));
+
+        $ownerId = $stmt->fetch();
+
+        return $ownerId['OwnerId'];
+    }
+
     static function getOwnerRestaurants(PDO $db, string $id) : array {
         $stmt = $db->prepare('
         SELECT Restaurant.RestaurantId, RestaurantName, Review, Price, CategoryId

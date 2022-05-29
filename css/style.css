@@ -96,6 +96,10 @@ section.rest_items{
     margin: 0;
 }
 
+.user-orders > a{
+    margin-left: 1em;
+}
+
 hr { 
     display: block; 
     height: 0;

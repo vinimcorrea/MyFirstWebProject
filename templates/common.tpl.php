@@ -20,9 +20,14 @@
 
     <?php if($session->isLoggedin()){?>
       <div class="user-orders">
-        <a href="/../index.php">My Orders</a>
+        <a href="/../pages/add_order.php">My Orders</a>
       </div>
-      
+
+      <?php if($session->isOwner()){?>
+        <div class="user-orders">
+        <a href="/../index.php">Orders Received</a>
+      </div>
+      <?php } ?>
       <div class="login_register">
         <a href="/../pages/profile.php">Hello, <?= $session->getName() ?></a>
       </div>

@@ -31,6 +31,12 @@
     User::createUser($db, $email, $password, $_POST['first-name'], $_POST['last-name'], $_POST['mobile'], $isOwner);
 
     $userLogged = User::getUserWithPassword($db, $email, $password);
+
+    if($userLogged->isOwner){
+        $session->setOwner();
+    } else {
+        $session->setCustomer();
+    }
     
     if(isset($userLogged)){
         $session->setEmail($userLogged->email);
