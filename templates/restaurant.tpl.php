@@ -15,12 +15,21 @@
       <p> What you need is here.<br>Ask and receive wherever you are. 
       </p>
       <form class="mainsearch" onsubmit="event.preventDefault();" role="search">
-        <label class="lb-searchbar" for="search">Search for stuff</label>
-        <input id="search" type="search" placeholder="Search..." autofocus required />
-        <button class="btn-searchbar" type="submit">Go</button>    
+        <input id="search-restaurants" type="search" placeholder="Search..." autofocus required />  
       </form>
     </div>
   </header>
+  <h3 id="title_ctg"> Categories </h3>
+  <div class="categories-select">
+    <form method="get">
+    <select name="rest-category" id="search-restaurant-by-category">
+        <option value="All">All</option>
+        <?php foreach($categories as $category){ ?>
+          <option value="<?=$category->name?>"><?=$category->name?></option>
+        <?php } ?>
+    </select>
+    </form>
+  </div>  
   <h3 id="title_rest"> Restaurants </h3>
   <section id="restaurants">
     <?php foreach($restaurants as $restaurant) { ?> 
@@ -89,7 +98,7 @@
   </div>
 
   <section id="restaurants">
-  <input id="search" type="search" placeholder="Search..." autofocus required/>
+  <input id="search-dishes" type="search" placeholder="Search..." autofocus required/>
     <?php foreach($categories as $category) { ?>
       <?php drawCategory($category, $dishes); ?>
       <?php } ?>
@@ -108,9 +117,10 @@
 <?php } ?>
 
 <?php function DrawDish(Dish $dish){ ?>
+  <article id="dishes">
   <li class="restaurantDish">
     <span class="DishName">
-      <a href="menu.php?id=<?=$dish->dishId?>"><?=$dish->name?></a>
+      <p><?=$dish->name?></p>
     </span>
     <span class="DishDescription">
       <?=$dish->ingredients?>
@@ -122,10 +132,11 @@
       <?=$dish->isVegan?>
     </span> 
   </li> 
-  <form action="../actions/action_create_restaurant.php" method="post">
+  <form action="../actions/action_create_order.php" method="post">
   <input type="number"name="rest-name" required>
   <button type="submit" class="registerbtn">Purchase</button>
   </form>
+  </article>
   
 <?php } ?>
 

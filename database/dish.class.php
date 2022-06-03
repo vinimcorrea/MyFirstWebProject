@@ -100,6 +100,20 @@ class Dish{
         ]); 
     }
 
+    static function searchDish(PDO $db, string $search, int $restaurantId){
+        $stmt = $db->prepare('SELECT Name, Price, Ingredients, Vegan 
+        FROM Dish JOIN Restaurant 
+        ON Dish.RestaurantId = Restaurant.RestaurantId
+        AND Restaurant.RestaurantId = ?
+        AND Name LIKE ?');
+
+
+        $stmt->execute(array($restaurantId, $search.'%'));
+
+        $dishes = $stmt->fetchAll();
+
+        return $dishes;
+    }
 }   
 
 ?>

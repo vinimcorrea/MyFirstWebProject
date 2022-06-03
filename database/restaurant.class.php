@@ -17,7 +17,7 @@ class Restaurant {
         $this->price          = $price;
         $this->categoryId     = $categoryId;
     }
-
+    
     static function getRestaurants(PDO $db, int $count) : array{
         $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price, CategoryId FROM Restaurant LIMIT ?');
         $stmt->execute(array($count));
@@ -107,6 +107,55 @@ class Restaurant {
                 $restaurant['CategoryId']
             );
         }
+
+        return $restaurants;
+    }
+
+    public static function searchRestaurantsByName(PDO $db, string $search): array
+    {
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price, name 
+        FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
+        WHERE RestaurantName LIKE ?');
+        $stmt->execute(array($search.'%'));
+
+        $restaurants = $stmt->fetchAll();
+
+        return $restaurants;
+    }
+
+    public static function searchRestaurantsByScore(PDO $db, float $score): array
+    {
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price, CategoryId, (SELECT round(avg(rating), 3) as average FROM Review
+        WHERE restaurantId = Restaurant.restaurantId) as avg FROM Restaurant  ORDER BY (avg) desc LIMIT ?');
+        $stmt->execute(array($count));
+
+        $restaurants = array();
+        while ($restaurant = $stmt->fetch()) {
+            if (floatval($restaurant['avg']) < $score) {
+                break;
+            }
+            $restaurants[] = new Restaurant(
+                $restaurant['RestaurantId'],
+                $restaurant['RestaurantName'],
+                $restaurant['Review'],
+                $restaurant['Price'],
+                $restaurant['CategoryId']
+            );
+            end($restaurants)->avg = $restaurant['avg'];
+        }
+
+        return $restaurants;
+    }
+
+    public static function searchRestaurantsByCategory(PDO $db, string $search): array
+    {
+        $stmt = $db->prepare('
+        SELECT RestaurantId, RestaurantName, Review, Price, name
+        FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
+        AND name LIKE ?');
+        $stmt->execute(array($search.'%'));
+
+        $restaurants = $stmt->fetchAll();
 
         return $restaurants;
     }

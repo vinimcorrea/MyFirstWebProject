@@ -12,8 +12,8 @@
 
     $db = getDatabaseConnection();
 
-    $restaurants = Restaurant::getRestaurants($db, 3);
-    $categories  = Category::getCategories($db, 3);
+    $restaurants = Restaurant::getRestaurants($db, 10);
+    $categories  = Category::getCategories($db,10);
 
     drawHeader($session);
     drawRestaurants($restaurants, $categories);
