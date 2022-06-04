@@ -68,7 +68,7 @@
 <?php } ?>
 
 <?php function drawRestaurantForm(array $categories){ ?>
-  <form action="../actions/action_create_restaurant.php" method="post">
+  <form action="../actions/action_create_restaurant.php" method="post" enctype="multipart/form-data">
   <div class="container">
     <h1>Add Your Restaurant</h1>
 

@@ -48,7 +48,7 @@
     if (!$original) $original = imagecreatefrompng($originalFileName);
     if (!$original) $original = imagecreatefromgif($originalFileName);
 
-    if (!$original) die();
+    if (!$original) die();      
 
     $width = imagesx($original);     // width of the original image
     $height = imagesy($original);    // height of the original image
