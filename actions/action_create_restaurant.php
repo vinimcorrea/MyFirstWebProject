@@ -27,6 +27,7 @@
 
     // Get image ID
     $id = $db->lastInsertId();
+    $image_id = $id;
 
     // Create folders if they don't exist
 
@@ -68,11 +69,10 @@
     }
 
     // Create and save a medium image
-    $medium = imagecreatetruecolor($mediumwidth, $mediumheight);
-    imagecopyresized($medium, $original, 0, 0, 0, 0, $mediumwidth, $mediumheight, $width, $height);
+    $medium = imagecreatetruecolor($mediumwidth, (int) $mediumheight);
+    imagecopyresized($medium, $original, 0, 0, 0, 0, $mediumwidth, (int) $mediumheight, $width, $height);
     imagejpeg($medium, $mediumFileName);
 
-    header("Location: index.php");
 
     $user = User::getUser($db, $session->getEmail());
     //if (!$user->IsOwner) die(header('Location: ../pages/profile.php')); // add 404 page not found
@@ -84,7 +84,7 @@
 
     $category = Category::getCategoryByName($db, $_POST['rest-category']);
 
-    $restaurant = Restaurant::createRestaurant($db, $user, $_POST['rest-name'], $_POST['rest-review'], $_POST['rest-price'], $category->categoryId);
+    $restaurant = Restaurant::createRestaurant($db, $user, $_POST['rest-name'], $_POST['rest-price'], $category->categoryId, (int) $image_id);
 
     $RestaurantId = $db->lastInsertId();
 

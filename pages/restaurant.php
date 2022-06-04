@@ -30,10 +30,10 @@
     }
   }
 
-  $restaurant = Restaurant::getRestaurant($db, intval($_GET['id']));
-  $menus      = Menu::getMenus($db, 3);
+  $restaurant  = Restaurant::getRestaurant($db, intval($_GET['id']));
+  $menus       = Menu::getMenus($db, 3);
 
-  $address = Address::getAddressWithResId($db, intval($_GET['id']));
+  $address     = Address::getAddressWithResId($db, intval($_GET['id']));
 
   $dishes      = Dish::getRestaurantDishes($db, $restaurant->restaurantId);
   $categories  = Category::getCategories($db, 10);

@@ -34,14 +34,11 @@
   <section id="restaurants">
     <?php foreach($restaurants as $restaurant) { ?> 
       <div class="rest_items">
-        <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->restaurantId?>">
+        <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 2" <?=$restaurant->restaurantId?>">
         <span class="caption">
           <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
               <?=$restaurant->restaurantName?>
           </a>
-          <div class="rest_review">
-          <?=$restaurant->review?>
-          </div>
           <?php $db = getDatabaseConnection(); ?>
           <?php $category = Category::getCategory($db, $restaurant->categoryId)?>
           <p><?=$category->name?></p>
@@ -66,12 +63,11 @@
 
 
   <header class="restBanner">
-    <img src="https://picsum.photos/200?" alt="banner" <?=$restaurant->restaurantId?>">
+    <img src="../images/restaurants/originals/<?=$restaurant->imageId?>.jpg" alt="banner" <?=$restaurant->restaurantId?>">
   </header>
   <div class="rest_design">
-    <img src="https://picsum.photos/200?" alt="Screen 1" <?=$restaurant->restaurantId?>">
+    <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 1" <?=$restaurant->restaurantId?>">
     <h1 class="RestaurantName"><?=$restaurant->restaurantName?></h1>
-    <p id="reviewRest"><?=$restaurant->review?> </p>
   
   </div>
 
@@ -138,14 +134,11 @@
     <?php foreach($restaurants as $restaurant) { ?>
       
       <div class="rest_items">
-        <img src="https://picsum.photos/200?" alt="Screen 2" <?=$restaurant->restaurantId?>">
+        <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 2" <?=$restaurant->restaurantId?>">
         <span class="caption">
           <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
               <?=$restaurant->restaurantName?>
           </a>
-          <div class="rest_review">
-          <?=$restaurant->review?>
-          </div>
           <?php $db = getDatabaseConnection(); ?>
           <?php $category = Category::getCategory($db, $restaurant->categoryId)?>
           <p><?=$category->name?></p>

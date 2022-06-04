@@ -170,12 +170,11 @@
       Image Title:
       <input type="text" name="image_title">
     </div>
-    
     <input type="file" name="dish-image">
-    <input type="submit" value="Save Changes">
-
+    <div>
     <button type="submit">Submit</button>
-</form>
+    </div>
+  </form>
 
 <?php } ?>
 
