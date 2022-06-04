@@ -4,22 +4,22 @@ declare(strict_types=1);
 class Restaurant {
     public ?int    $restaurantId;
     public ?string $restaurantName;
-    public ?float  $review = 0;
     public ?string $price;
     public  int    $categoryId;
+    public ?int    $imageId;
 
     public function __construct(int $restaurantId, string $restaurantName, 
-                                        float $review, string $price, int $categoryId){
+                                        string $price, int $categoryId, int $imageId){
         
         $this->restaurantId   = $restaurantId;
         $this->restaurantName = $restaurantName;
-        $this->review         = $review;
         $this->price          = $price;
         $this->categoryId     = $categoryId;
+        $this->imageId        = $imageId;
     }
     
     static function getRestaurants(PDO $db, int $count) : array{
-        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price, CategoryId FROM Restaurant LIMIT ?');
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Price, CategoryId, ImageId FROM Restaurant LIMIT ?');
         $stmt->execute(array($count));
 
         $restaurants = array();
@@ -27,9 +27,9 @@ class Restaurant {
             $restaurants[] = new Restaurant(
                 $restaurant['RestaurantId'],
                 $restaurant['RestaurantName'],
-                $restaurant['Review'],
                 $restaurant['Price'],
-                $restaurant['CategoryId']
+                $restaurant['CategoryId'],
+                $restaurant['ImageId']
             );
         }
 
@@ -38,14 +38,14 @@ class Restaurant {
 
     function save($db){
         $stmt = $db->prepare('
-            UPDATE Restaurant SET restaurantName = ?
+            UPDATE Restaurant SET restaurantName = ?, Price = ?, CategoryId = ?, ImageId = ? 
             WHERE RestaurantId = ?');
 
-        $stmt->execute(array($this->RestauratName, $this->id));
+        $stmt->execute(array($this->restaurantName, $this->price, $this->categoryId, $this->imageId, $this->restaurantId));
     }
 
     static function getRestaurant(PDO $db, int $id) : Restaurant {
-        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price, CategoryId FROM Restaurant WHERE RestaurantId = ?');
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Price, CategoryId, ImageId FROM Restaurant WHERE RestaurantId = ?');
         $stmt->execute(array($id));
 
         $restaurant = $stmt->fetch();
@@ -53,15 +53,15 @@ class Restaurant {
         return new Restaurant(
             $restaurant['RestaurantId'],
             $restaurant['RestaurantName'],
-            $restaurant['Review'],
             $restaurant['Price'],
-            $restaurant['CategoryId']
+            $restaurant['CategoryId'],
+            $restaurant['ImageId']
         );
     }
 
 
     static function getOwnerRestaurant(PDO $db, string $id) : Restaurant {
-        $stmt = $db->prepare('SELECT Restaurant.RestaurantId, RestaurantName, Review, Price, CategoryId 
+        $stmt = $db->prepare('SELECT Restaurant.RestaurantId, RestaurantName, Price, CategoryId, ImageId 
         FROM Restaurant, RestaurantOwner 
         WHERE Restaurant.RestaurantId = RestaurantOwner.RestaurantId AND OwnerId = ?');
         $stmt->execute(array($id));
@@ -71,9 +71,9 @@ class Restaurant {
         return new Restaurant(
             $restaurant['RestaurantId'],
             $restaurant['RestaurantName'],
-            $restaurant['Review'],
             $restaurant['Price'],
-            $restaurant['CategoryId']
+            $restaurant['CategoryId'],
+            $restaurant['ImageId']
         );
     }
 
@@ -91,7 +91,7 @@ class Restaurant {
 
     static function getOwnerRestaurants(PDO $db, string $id) : array {
         $stmt = $db->prepare('
-        SELECT Restaurant.RestaurantId, RestaurantName, Review, Price, CategoryId
+        SELECT Restaurant.RestaurantId, RestaurantName, Price, CategoryId, ImageId
         FROM Restaurant, RestaurantOwner 
         WHERE Restaurant.RestaurantId = RestaurantOwner.RestaurantId 
         AND OwnerId = ?');
@@ -102,9 +102,9 @@ class Restaurant {
             $restaurants[] = new Restaurant(
                 $restaurant['RestaurantId'],
                 $restaurant['RestaurantName'],
-                $restaurant['Review'],
                 $restaurant['Price'],
-                $restaurant['CategoryId']
+                $restaurant['CategoryId'],
+                $restaurant['ImageId']
             );
         }
 
@@ -113,7 +113,7 @@ class Restaurant {
 
     public static function searchRestaurantsByName(PDO $db, string $search): array
     {
-        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price, name 
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Price, name 
         FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
         WHERE RestaurantName LIKE ?');
         $stmt->execute(array($search.'%'));
@@ -123,6 +123,7 @@ class Restaurant {
         return $restaurants;
     }
 
+    //redo this function
     public static function searchRestaurantsByScore(PDO $db, float $score): array
     {
         $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Review, Price, CategoryId, (SELECT round(avg(rating), 3) as average FROM Review
@@ -137,7 +138,6 @@ class Restaurant {
             $restaurants[] = new Restaurant(
                 $restaurant['RestaurantId'],
                 $restaurant['RestaurantName'],
-                $restaurant['Review'],
                 $restaurant['Price'],
                 $restaurant['CategoryId']
             );
@@ -150,7 +150,7 @@ class Restaurant {
     public static function searchRestaurantsByCategory(PDO $db, string $search): array
     {
         $stmt = $db->prepare('
-        SELECT RestaurantId, RestaurantName, Review, Price, name
+        SELECT RestaurantId, RestaurantName, Price, name
         FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
         AND name LIKE ?');
         $stmt->execute(array($search.'%'));
@@ -163,18 +163,18 @@ class Restaurant {
 
 
 
-    static function createRestaurant(PDO $db, User $user, string $restaurantName,string $review, string $price, int $categoryId){
+    static function createRestaurant(PDO $db, User $user, string $restaurantName, string $price, int $categoryId, int $imageId){
         
         $stmt = $db-> prepare('
-        INSERT INTO Restaurant(RestaurantName, Review, Price, CategoryId) 
-        VALUES(:RestaurantName, :Review, :Price, :CategoryId)'
+        INSERT INTO Restaurant(RestaurantName, Price, CategoryId, ImageId) 
+        VALUES(:RestaurantName, :Price, :CategoryId, :ImageId)'
          );
 
         if($stmt->execute([
             ':RestaurantName' => $restaurantName,
-            ':Review'         => $review,
             ':Price'          => $price,
-            ':CategoryId'     => $categoryId
+            ':CategoryId'     => $categoryId,
+            ':ImageId'        => $imageId
         ])){
         echo "Succesful added record";
         } else{

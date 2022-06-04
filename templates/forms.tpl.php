@@ -68,19 +68,13 @@
 <?php } ?>
 
 <?php function drawRestaurantForm(array $categories){ ?>
-  <form action="../actions/action_create_restaurant.php" method="post">
+  <form action="../actions/action_create_restaurant.php" method="post" enctype="multipart/form-data">
   <div class="container">
     <h1>Add Your Restaurant</h1>
 
     <div>
       <label for="rest-name">Name:</label>
       <input type="text" placeholder="name" name="rest-name" required>
-    </div>
-
-
-    <div>
-      <label for="rest-review">Review:</label>
-      <input type="text" placeholder="price" name="rest-review" required>  
     </div>
 
     <div>
@@ -95,7 +89,14 @@
               <option value="<?=$category->name?>"><?=$category->name?></option>
             <?php } ?>
         </select>
-    </div>  
+    </div>
+    
+    <div>
+      Image Title:
+      <input type="text" name="image_title" required>
+    </div>
+
+    <input type="file" name="rest-image" required>
 
     <div>
       <label for="rest-addr-one">Address Line One:</label>
@@ -165,8 +166,15 @@
       </label>
     <div>
 
+    <div>
+      Image Title:
+      <input type="text" name="image_title">
+    </div>
+    <input type="file" name="dish-image">
+    <div>
     <button type="submit">Submit</button>
-</form>
+    </div>
+  </form>
 
 <?php } ?>
 
@@ -239,4 +247,68 @@
     </div>
     <button type="submit">Save</button>
   </form>
+<?php } ?>
+
+<?php function drawEditRestaurantForm(array $categories){ ?>
+  <form action="../actions/action_edit_restaurant.php" method="post">
+  <div class="container">
+    <h1>Edit Your Restaurant</h1>
+
+    <div>
+      <label for="rest-name">Name:</label>
+      <input type="text" placeholder="name" name="rest-name" required>
+    </div>
+
+    <div>
+      <label for="rest-price">Price:</label>
+      <input type="text" placeholder="price" name="rest-price" required>  
+    </div>
+    
+    <div>
+    <label for="rest-category">Category:</label>
+        <select name="rest-category">
+            <?php foreach($categories as $category){ ?>
+              <option value="<?=$category->name?>"><?=$category->name?></option>
+            <?php } ?>
+        </select>
+    </div>
+    
+    <div>
+      Image Title:
+      <input type="text" name="image_title">
+    </div>
+
+    <input type="file" name="rest-image">
+    <input type="submit" value="Save Changes">
+
+    <div>
+      <label for="rest-addr-one">Address Line One:</label>
+      <input type="text" placeholder="Address Line One" name="rest-addr-one" required>
+    </div> 
+    
+    <div> 
+      <label for="rest-addr-two">Address Line Two:</label>
+      <input type="text" placeholder="last name" name="rest-addr-two">
+    </div> 
+
+    <div>
+      <label for="rest-city">City:</label>
+      <input type="text" name="rest-city" placeholder="city" required>
+    </div>
+
+    <div>
+      <label for="rest-country">Country:</label>
+      <input type="text" name="rest-country" placeholder="country" required>
+    </div>
+
+    <div>
+      <label for="rest-postalcode">Postalcode:</label>
+      <input type="tel" name="rest-postalcode" placeholder="4465-163" pattern="[0-9]{4}-[0-9]{3}" required>
+    </div>
+    
+    <div>
+      <p>edit restaurant</p>
+      <button type="submit" class="registerbtn">edit</button>
+    </div>
+</form>
 <?php } ?>
