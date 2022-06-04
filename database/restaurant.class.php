@@ -113,7 +113,7 @@ class Restaurant {
 
     public static function searchRestaurantsByName(PDO $db, string $search): array
     {
-        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Price, name 
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Price, name, Restaurant.ImageId 
         FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
         WHERE RestaurantName LIKE ?');
         $stmt->execute(array($search.'%'));
@@ -150,7 +150,7 @@ class Restaurant {
     public static function searchRestaurantsByCategory(PDO $db, string $search): array
     {
         $stmt = $db->prepare('
-        SELECT RestaurantId, RestaurantName, Price, name
+        SELECT RestaurantId, RestaurantName, Price, name, Restaurant.ImageId
         FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
         AND name LIKE ?');
         $stmt->execute(array($search.'%'));

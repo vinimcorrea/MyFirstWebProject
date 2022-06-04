@@ -114,7 +114,7 @@
 <?php function DrawDish(Dish $dish){ ?>
   <div id="dishes">
     <h6 id="dish-name"><?=$dish->name?> / €<?=number_format($dish->price, 2, '.', '')?></h6>
-    <img src="https://picsum.photos/200?" alt="Screen 1">
+    <img src="../images/dishes/thumbs_small/<?=$dish->imageId?>.jpg" alt="Screen 1">
     <p class="DishDescription">
       <?=$dish->ingredients?>
       <?=$dish->isVegan?>

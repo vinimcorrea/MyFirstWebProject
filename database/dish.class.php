@@ -107,7 +107,7 @@ class Dish{
     }
 
     static function searchDish(PDO $db, string $search, int $restaurantId){
-        $stmt = $db->prepare('SELECT Dish.DishId, Dish.Name, Dish.Price, Ingredients, Vegan, Category.Name as CategoryName
+        $stmt = $db->prepare('SELECT Dish.DishId, Dish.Name, Dish.Price, Ingredients, Vegan, Category.Name as CategoryName, Dish.ImageId
         FROM Dish, Restaurant, Category 
         WHERE Dish.RestaurantId = Restaurant.RestaurantId
         AND Category.CategoryId = Dish.CategoryId

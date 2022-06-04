@@ -132,7 +132,7 @@
 <?php } ?>
 
 <?php function drawDishForm(array $categories){ ?>
-  <form action="../actions/action_create_dish.php" method="post">
+  <form action="../actions/action_create_dish.php" method="post" enctype="multipart/form-data">
   <div class="container">
     <h1>Add Dish</h1>
 
