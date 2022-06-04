@@ -9,9 +9,10 @@ class Dish{
     public string    $ingredients;
     public ?bool     $isVegan;
     public ?int      $categoryId; 
-    public int       $restaurantId; 
+    public int       $restaurantId;
+    public int       $imageId; 
 
-    public function __construct(int $dishId, string $name, float $price, string $ingredients, bool $isVegan, int $categoryId, int $restaurantId){
+    public function __construct(int $dishId, string $name, float $price, string $ingredients, bool $isVegan, int $categoryId, int $restaurantId, int $imageId){
         
         $this->dishId       = $dishId;
         $this->name         = $name;
@@ -20,10 +21,11 @@ class Dish{
         $this->isVegan      = $isVegan;
         $this->categoryId   = $categoryId;
         $this->restaurantId = $restaurantId;
+        $this->imageId      = $imageId;
     }
 
     static function getDishes(PDO $db, int $count) : array {
-        $stmt = $db->prepare('SELECT DishId, Name, Price, Ingredients, Vegan, CategoryId, RestaurantId  FROM Dish LIMIT ?' );
+        $stmt = $db->prepare('SELECT DishId, Name, Price, Ingredients, Vegan, CategoryId, RestaurantId, ImageId  FROM Dish LIMIT ?' );
         $stmt->execute(array($count));
 
         $dishes = array();
@@ -36,7 +38,8 @@ class Dish{
                 $dish['Ingredients'],
                 (bool) $dish['Vegan'],
                 $dish['CategoryId'],
-                $dish['RestaurantId']
+                $dish['RestaurantId'],
+                $dish['ImageId']
             );
         }
 
@@ -45,7 +48,7 @@ class Dish{
 
     static function getRestaurantDishes(PDO $db, int $restaurantId) : array {
         $stmt = $db->prepare('
-        SELECT DishId, Name, Price, Ingredients, Vegan, CategoryId, RestaurantId  
+        SELECT DishId, Name, Price, Ingredients, Vegan, CategoryId, RestaurantId, ImageId
         FROM Dish
         WHERE RestaurantId = ?');
         $stmt->execute(array($restaurantId));
@@ -60,7 +63,8 @@ class Dish{
                 $dish['Ingredients'],
                 (bool) $dish['Vegan'],
                 $dish['CategoryId'],
-                $dish['RestaurantId']
+                $dish['RestaurantId'],
+                $dish['ImageId']
             );
         }
 
@@ -68,7 +72,7 @@ class Dish{
     }
 
     static function getDish(PDO $db, int $dishId) : Dish {
-        $stmt = $db->prepare('SELECT DishId, Name, Price, Ingredients, Vegan, RestaurantId FROM Dish WHERE DishId = ?');
+        $stmt = $db->prepare('SELECT DishId, Name, Price, Ingredients, Vegan, RestaurantId, ImageId FROM Dish WHERE DishId = ?');
         $stmt->execute(array($dishId));
 
         $dish=$stmt->fetch();
@@ -80,14 +84,15 @@ class Dish{
             $dish['Ingredients'],
             $dish['Vegan'],
             $dish['CategoryId'],
-            $dish['RestaurantId']
+            $dish['RestaurantId'],
+            $dish['ImageId']
         );
     }
 
-    static function createDish(PDO $db, $name, $price, $ingredients, $vegan, $categoryId, $restaurantId){
+    static function createDish(PDO $db, $name, $price, $ingredients, $vegan, $categoryId, $restaurantId, $imageId){
         $stmt = $db-> prepare('
-        INSERT INTO Dish(Name, Price, Ingredients, Vegan, CategoryId, RestaurantId) 
-        VALUES(:Name, :Price, :Ingredients, :Vegan, :CategoryId, :RestaurantId)'
+        INSERT INTO Dish(Name, Price, Ingredients, Vegan, CategoryId, RestaurantId, ImageId) 
+        VALUES(:Name, :Price, :Ingredients, :Vegan, :CategoryId, :RestaurantId, :ImageId)'
          );
 
         $stmt->execute([
@@ -96,16 +101,18 @@ class Dish{
             ':Ingredients'  => $ingredients,
             ':Vegan'        => (bool) $vegan,
             ':CategoryId'   => $categoryId, 
-            ':RestaurantId' => $restaurantId 
+            ':RestaurantId' => $restaurantId,
+            ':ImageId'      => $imageId
         ]); 
     }
 
     static function searchDish(PDO $db, string $search, int $restaurantId){
-        $stmt = $db->prepare('SELECT Name, Price, Ingredients, Vegan 
-        FROM Dish JOIN Restaurant 
-        ON Dish.RestaurantId = Restaurant.RestaurantId
+        $stmt = $db->prepare('SELECT Dish.DishId, Dish.Name, Dish.Price, Ingredients, Vegan, Category.Name as CategoryName
+        FROM Dish, Restaurant, Category 
+        WHERE Dish.RestaurantId = Restaurant.RestaurantId
+        AND Category.CategoryId = Dish.CategoryId
         AND Restaurant.RestaurantId = ?
-        AND Name LIKE ?');
+        AND Dish.Name LIKE ?');
 
 
         $stmt->execute(array($restaurantId, $search.'%'));

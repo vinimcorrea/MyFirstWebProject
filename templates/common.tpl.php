@@ -16,7 +16,7 @@
 <body>
   
   <header class="responsive-header">
-    <a href="index.php" class="logo">CompanyLogo</a>
+    <a href="/../actions/action_logout.php" class="logo">CompanyLogo</a>
   
 
     <?php if($session->isLoggedin()){?>

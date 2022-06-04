@@ -47,7 +47,6 @@
           <p><?=$category->name?></p>
         </span>
       </div>
-      </article>
     <?php } ?>
   </section>
 <?php } ?>
@@ -56,7 +55,7 @@
 
   <?php if($isOwner) {?>
     <div> 
-      <a href="">edit restaurant</a>
+      <a href="../pages/edit_restaurant.php">edit restaurant</a>
     </div>
 
     <div>
@@ -99,44 +98,36 @@
 
   <section id="restaurants">
   <input id="search-dishes" type="search" placeholder="Search..." autofocus required/>
+  <div class="RestaurantCategory">
     <?php foreach($categories as $category) { ?>
       <?php drawCategory($category, $dishes); ?>
       <?php } ?>
+  </div>
   </section>
 <?php } ?>
 
 <?php function drawCategory(Category $category, array $dishes){ ?>
       <?php foreach($dishes as $dish) { ?>
           <?php if($dish->categoryId === $category->categoryId){ ?>
-            <div class="RestaurantCategory">
             <h2 class="CategoryName"><?=$category->name?></h2>
             <?php DrawDish($dish); ?>
           <?php } ?>
       <?php } ?>
-  </div>
 <?php } ?>
 
 <?php function DrawDish(Dish $dish){ ?>
-  <article id="dishes">
-  <li class="restaurantDish">
-    <span class="DishName">
-      <p><?=$dish->name?></p>
-    </span>
-    <span class="DishDescription">
+  <div id="dishes">
+    <h6 id="dish-name"><?=$dish->name?> / €<?=number_format($dish->price, 2, '.', '')?></h6>
+    <img src="https://picsum.photos/200?" alt="Screen 1">
+    <p class="DishDescription">
       <?=$dish->ingredients?>
-    </span>
-    <span class="DishPrice">
-      <?=number_format($dish->price, 2, '.', '')?> €
-    </span>
-    <span class="DishIsVegan">
       <?=$dish->isVegan?>
-    </span> 
-  </li> 
+    </p>
+
   <form action="../actions/action_create_order.php" method="post">
-  <input type="number"name="rest-name" required>
   <button type="submit" class="registerbtn">Purchase</button>
   </form>
-  </article>
+</div>
   
 <?php } ?>
 

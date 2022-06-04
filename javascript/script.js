@@ -53,7 +53,7 @@ if(searchRestaurantName){
 }
 
 if(searchRestaurantCategory){
-    searchRestaurantCategory.addEventListener('click', async function(){
+    searchRestaurantCategory.addEventListener('input', async function(){
         const response = await fetch ('../api/api_restaurants.php?search=' + this.value + '&mode=category')
         const restaurants = await response.json()
         console.log(this.value)
@@ -97,13 +97,39 @@ if(searchRestaurantCategory){
 }
 
 if(searchDishRestaurant){
-    searchRestaurantName.addEventListener('input', async function(){
+    searchDishRestaurant.addEventListener('input', async function(){
         const response = await fetch ('../api/api_dishes.php?search=' + this.value)
+        console.log(this.value)
         const dishes = await response.json()
+        console.log(dishes)
 
-        const section = document.querySelector('#restaurants')
-        section.innerHTML = ''
+        const firstDiv = document.querySelector('.RestaurantCategory')
+        firstDiv.innerHTML = ''
     
-    
+        for(const dish of dishes){
+            const h2 = document.createElement('h2')
+            const secondDiv = document.createElement('div')
+            const h6 = document.createElement('h6')
+            const p = document.createElement('p')
+            const img = document.createElement('img')
+            const form = document.createElement('form')
+            const button = document.createElement('button')
+
+            h6.textContent = dish['Name'] + ' / ' + '€' + dish['Price']
+            p.textContent = dish['Ingredients']
+            img.src='https://picsum.photos/200?' + dish['DishId']
+            h2.textContent = dish['CategoryName']
+            button.textContent = 'Purchase'
+
+
+            form.appendChild(button)
+            secondDiv.appendChild(h6)
+            secondDiv.appendChild(img)
+            secondDiv.appendChild(p)
+            secondDiv.appendChild(form)
+
+            firstDiv.appendChild(h2)
+            firstDiv.appendChild(secondDiv)
+        }
     })
 }   
