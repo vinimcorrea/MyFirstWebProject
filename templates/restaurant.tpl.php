@@ -1,6 +1,8 @@
 <?php 
   declare(strict_types = 1); 
 
+  require_once(__DIR__ . '/../utils/session.php');
+
   require_once(__DIR__ . '/../database/connection.db.php');
 
   require_once(__DIR__ . '/../database/restaurant.class.php');
@@ -48,7 +50,7 @@
   </section>
 <?php } ?>
 
-<?php function drawRestaurant(Restaurant $restaurant, array $categories, array $dishes, Address $address, bool $isOwner) { ?>
+<?php function drawRestaurant(Restaurant $restaurant, array $categories, array $dishes, Address $address, bool $isOwner, Session $session) { ?>
 
   <?php if($isOwner) {?>
     <div> 
@@ -68,7 +70,10 @@
   <div class="rest_design">
     <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 1" <?=$restaurant->restaurantId?>">
     <h1 class="RestaurantName"><?=$restaurant->restaurantName?></h1>
-  
+    
+  <?php if ($session->isLoggedIn())
+    drawMarkRestaurantAsFavorite(Restaurant::isFavoriteRestaurantDB($session->getEmail(), $restaurant->restaurantId));
+    ?>
   </div>
 
   <div>
@@ -114,7 +119,7 @@
 <?php function DrawDish(Dish $dish){ ?>
   <div id="dishes">
     <h6 id="dish-name"><?=$dish->name?> / €<?=number_format($dish->price, 2, '.', '')?></h6>
-    <img src="https://picsum.photos/200?" alt="Screen 1">
+    <img src="../images/dishes/thumbs_small/<?=$dish->imageId?>.jpg" alt="Screen 1">
     <p class="DishDescription">
       <?=$dish->ingredients?>
       <?=$dish->isVegan?>
@@ -147,5 +152,21 @@
       </article>
     <?php } ?>
   </section>
+
+<?php } ?>
+
+
+<?php 
+
+function drawMarkRestaurantAsFavorite(bool $isChecked){ ?>
+  <?php 
+    $imageUrl = $isChecked ? "../images/assets/favorite-star-full.png"
+        :  "../images/assets/favorite-star-empty.png"
+            ?>
+    <form action="../actions/action_favorite_restaurant.php" method="post">
+      <label><input name="isChecked" type="checkbox" class="hide" value="<?=$isChecked?"true":"false"?>" <?=$isChecked? "checked = 'checked'":""?> ></label>
+      <button type="submit"><img src="<?=$imageUrl?>" width="20" height="20"></button>
+    </form>
+
 
 <?php } ?>

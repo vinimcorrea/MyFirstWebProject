@@ -16,12 +16,16 @@
 <body>
   
   <header class="responsive-header">
-    <a href="../index.php" class="logo">CompanyLogo</a>
-  
-
+  <div class="logo">
+    <a href="../index.php"><img src="../images/logo/deliver-logo.png" width="120" "alt="my logo"/></a>
+  </div>
+    
     <?php if($session->isLoggedin()){?>
       <div class="user-orders">
         <a href="/../pages/add_order.php">My Orders</a>
+      </div>
+      <div class="user-favorites">
+        <a href="/../pages/favorites.php">Favorites</a>
       </div>
 
       <?php if($session->isOwner()){?>

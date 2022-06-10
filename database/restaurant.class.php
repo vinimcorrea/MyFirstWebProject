@@ -113,7 +113,7 @@ class Restaurant {
 
     public static function searchRestaurantsByName(PDO $db, string $search): array
     {
-        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Price, name 
+        $stmt = $db->prepare('SELECT RestaurantId, RestaurantName, Price, name, Restaurant.ImageId 
         FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
         WHERE RestaurantName LIKE ?');
         $stmt->execute(array($search.'%'));
@@ -150,7 +150,7 @@ class Restaurant {
     public static function searchRestaurantsByCategory(PDO $db, string $search): array
     {
         $stmt = $db->prepare('
-        SELECT RestaurantId, RestaurantName, Price, name
+        SELECT RestaurantId, RestaurantName, Price, name, Restaurant.ImageId
         FROM Restaurant JOIN Category ON Category.categoryId = Restaurant.categoryId
         AND name LIKE ?');
         $stmt->execute(array($search.'%'));
@@ -197,6 +197,29 @@ class Restaurant {
             echo "Error while adding record";
         }
 
+    }
+
+    public static function toggleFavoriteRestaurant(PDO $db, string $customerId, int $restaurantId, bool $isChecked)
+    {
+        if (!$isChecked) {
+            $stmt = $db->prepare('INSERT INTO FavoriteRestaurant VALUES(?,?)');
+            $stmt->execute(array($customerId, $restaurantId));
+        }
+        else{
+            $stmt = $db->prepare('DELETE FROM FavoriteRestaurant WHERE restaurantId = ? and customerId = ?');
+            $stmt->execute(array($restaurantId, $customerId));
+        }
+    }
+
+    public static function isFavoriteRestaurantDB($customerId, $restaurantId): bool
+    {
+        $db = getDatabaseConnection();
+        $stmt = $db->prepare('SELECT * FROM FavoriteRestaurant WHERE customerId = ? AND restaurantId = ?');
+        $stmt->execute(array($customerId, $restaurantId));
+        if ($stmt->fetch()) {
+            return true;
+        }
+        return false;
     }
 
 

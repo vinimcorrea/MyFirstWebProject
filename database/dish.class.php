@@ -107,7 +107,7 @@ class Dish{
     }
 
     static function searchDish(PDO $db, string $search, int $restaurantId){
-        $stmt = $db->prepare('SELECT Dish.DishId, Dish.Name, Dish.Price, Ingredients, Vegan, Category.Name as CategoryName
+        $stmt = $db->prepare('SELECT Dish.DishId, Dish.Name, Dish.Price, Ingredients, Vegan, Category.Name as CategoryName, Dish.ImageId
         FROM Dish, Restaurant, Category 
         WHERE Dish.RestaurantId = Restaurant.RestaurantId
         AND Category.CategoryId = Dish.CategoryId
@@ -121,6 +121,31 @@ class Dish{
 
         return $dishes;
     }
+
+    public static function isFavoriteDish($customerId, $dishId) : bool
+    {
+        $db = getDatabaseConnection();
+        $stmt = $db->prepare('SELECT * FROM FavoriteDish WHERE customerId = ? AND dishId = ?');
+        $stmt->execute(array($customerId, $dishId));
+        if ($stmt->fetch()) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public static function toggleFavoriteDish(PDO $db, int $customerId, int $dishId, bool $isChecked)
+    {
+        if (!$isChecked) {
+            $stmt = $db->prepare('INSERT INTO FavoriteDish VALUES(?,?)');
+            $stmt->execute(array($customerId, $dishId));
+        }
+        else{
+            $stmt = $db->prepare('DELETE FROM FavoriteDish WHERE CustomerId = ? and DishId = ?');
+            $stmt->execute(array($customerId, $dishId));
+        }
+    }
+
 }   
 
 ?>

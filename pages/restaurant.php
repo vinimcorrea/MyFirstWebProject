@@ -31,7 +31,7 @@
   }
 
   $restaurant  = Restaurant::getRestaurant($db, intval($_GET['id']));
-  $menus       = Menu::getMenus($db, 3);
+  $menus       = Menu::getMenus($db, 10);
 
   $address     = Address::getAddressWithResId($db, intval($_GET['id']));
 
@@ -41,6 +41,6 @@
   $_SESSION['id'] = $restaurant->restaurantId;
 
   drawHeader($session);
-  drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner);
+  drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner, $session);
   drawFooter();                                                                                                                       
 ?>

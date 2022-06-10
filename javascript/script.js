@@ -2,15 +2,31 @@ const searchRestaurantName = document.querySelector('#search-restaurants')
 //const searchRestaurantName = document.querySelector('#search_restaurant_by_name')
 const searchRestaurantCategory = document.querySelector('#search-restaurant-by-category')
 const searchRestaurantCategorybtn = document.querySelector('#btn-category')
+const favoriteRestaurant = document.querySelector('#favorite-rest')
 
 
 const searchDishRestaurant = document.querySelector('#search-dishes')
 
+
+/*
+favoriteRestaurant.addEventListener('click', () => {
+    toggleFavorite()
+})
+*/
+if(favoriteRestaurant){
+    favoriteRestaurant.addEventListener('click', async function(){
+        console.log(this.value)
+        console.log(restaurantId)
+    })
+}
+
+
 if(searchRestaurantName){
     searchRestaurantName.addEventListener('input', async function(){
-    const response = await fetch ('../api/api_restaurants.php?search=' + this.value + '&mode=name'  )
+    const response = await fetch ('../api/api_restaurants.php?search=' + this.value + '&mode=name')
     console.log(this.value)
     const restaurants = await response.json()
+    console.log(restaurants)
 
     const section = document.querySelector('#restaurants')
     section.innerHTML = ''
@@ -34,7 +50,7 @@ if(searchRestaurantName){
         spanDiv.textContent = restaurant['Review']
 
 
-        img.src = 'https://picsum.photos/200?' + restaurant['RestaurantId']
+        img.src = '../images/restaurants/thumbs_small/' + restaurant['ImageId'] + '.jpg'
         spanP.textContent = restaurant['name']
         spanA.textContent = restaurant['RestaurantName']
         
@@ -80,7 +96,7 @@ if(searchRestaurantCategory){
             spanDiv.textContent = restaurant['Review']
 
 
-            img.src = 'https://picsum.photos/200?' + restaurant['RestaurantId']
+            img.src = '../images/restaurants/thumbs_small/' + restaurant['ImageId'] + '.jpg'
             spanP.textContent = restaurant['name']
             spanA.textContent = restaurant['RestaurantName']
             
@@ -117,7 +133,7 @@ if(searchDishRestaurant){
 
             h6.textContent = dish['Name'] + ' / ' + '€' + dish['Price']
             p.textContent = dish['Ingredients']
-            img.src='https://picsum.photos/200?' + dish['DishId']
+            img.src='../images/dishes/thumbs_small/' + dish['ImageId'] + '.jpg'
             h2.textContent = dish['CategoryName']
             button.textContent = 'Purchase'
 
