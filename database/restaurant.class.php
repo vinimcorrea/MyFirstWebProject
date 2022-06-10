@@ -199,6 +199,29 @@ class Restaurant {
 
     }
 
+    public static function toggleFavoriteRestaurant(PDO $db, string $customerId, int $restaurantId, bool $isChecked)
+    {
+        if (!$isChecked) {
+            $stmt = $db->prepare('INSERT INTO FavoriteRestaurant VALUES(?,?)');
+            $stmt->execute(array($customerId, $restaurantId));
+        }
+        else{
+            $stmt = $db->prepare('DELETE FROM FavoriteRestaurant WHERE restaurantId = ? and customerId = ?');
+            $stmt->execute(array($restaurantId, $customerId));
+        }
+    }
+
+    public static function isFavoriteRestaurantDB($customerId, $restaurantId): bool
+    {
+        $db = getDatabaseConnection();
+        $stmt = $db->prepare('SELECT * FROM FavoriteRestaurant WHERE customerId = ? AND restaurantId = ?');
+        $stmt->execute(array($customerId, $restaurantId));
+        if ($stmt->fetch()) {
+            return true;
+        }
+        return false;
+    }
+
 
 }
 

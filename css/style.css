@@ -133,6 +133,19 @@ hr {
     margin: 0 auto 0 0;
 }
 
+.user-favorites > a{
+    margin-left: 1em;
+}
+
+.logo > a{
+    padding: 0;
+    background-color: white;
+}
+
+.hide{
+    display: none;
+}
+
 #search-restaurants{
   height: var(--height);
   font-family: var(--font-fam);

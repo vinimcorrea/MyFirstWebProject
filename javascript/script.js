@@ -2,9 +2,24 @@ const searchRestaurantName = document.querySelector('#search-restaurants')
 //const searchRestaurantName = document.querySelector('#search_restaurant_by_name')
 const searchRestaurantCategory = document.querySelector('#search-restaurant-by-category')
 const searchRestaurantCategorybtn = document.querySelector('#btn-category')
+const favoriteRestaurant = document.querySelector('#favorite-rest')
 
 
 const searchDishRestaurant = document.querySelector('#search-dishes')
+
+
+/*
+favoriteRestaurant.addEventListener('click', () => {
+    toggleFavorite()
+})
+*/
+if(favoriteRestaurant){
+    favoriteRestaurant.addEventListener('click', async function(){
+        console.log(this.value)
+        console.log(restaurantId)
+    })
+}
+
 
 if(searchRestaurantName){
     searchRestaurantName.addEventListener('input', async function(){
