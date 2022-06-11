@@ -98,6 +98,7 @@ class Category {
     }
 
     static function createCategory(PDO $db, $name, $imageId){
+        
         $stmt = $db-> prepare('
         INSERT INTO Category(Name, ImageId) 
         VALUES(:Name, :ImageId)'

@@ -68,3 +68,20 @@
     </section>
 
 <?php } ?>
+
+<?php function drawFavorite(array $restaurants) {?>
+    <h2 class="user-fav-rest">Your favorite restaurants</h2>
+    <section id="restaurants">
+    <?php foreach($restaurants as $restaurant){ ?>
+        <div class="rest_items">
+        <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 2" <?=$restaurant->restaurantId?>">
+        <span class="caption">
+          <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
+              <?=$restaurant->restaurantName?>
+            </a>
+        </span>
+        </div>
+    <?php } ?>
+    </section>
+
+<?php } ?>

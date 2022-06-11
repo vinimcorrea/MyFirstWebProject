@@ -6,15 +6,18 @@
 
   require_once(__DIR__ . '/../database/connection.db.php');
 
-  require_once(__DIR__ . '/../database/category.class.php');
+  require_once(__DIR__ . '/../database/order.class.php');
 
   require_once(__DIR__ . '/../templates/common.tpl.php');
-  require_once(__DIR__ . '/../templates/forms.tpl.php');
+  require_once(__DIR__ . '/../templates/order.tpl.php');
 
   $db = getDatabaseConnection();
 
 
+  //$orders = Order::getCustomerOrders($db, $userId);
+
+   
   drawHeader($session);
-  drawOrderForm();
+  drawOrderTable();
   drawFooter();                                                                                                                       
 ?>

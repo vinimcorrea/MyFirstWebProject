@@ -16,6 +16,7 @@
 
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/restaurant.tpl.php');
+  require_once(__DIR__ . '/../templates/order.tpl.php');
 
   $db = getDatabaseConnection();
 
@@ -42,5 +43,6 @@
 
   drawHeader($session);
   drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner, $session);
+  if($session->isLoggedIn()) drawOrderTable();
   drawFooter();                                                                                                                       
 ?>

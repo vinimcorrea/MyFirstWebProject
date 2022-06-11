@@ -108,9 +108,9 @@
 <?php } ?>
 
 <?php function drawCategory(Category $category, array $dishes){ ?>
+    <h2 class="CategoryName"><?=$category->name?></h2>
       <?php foreach($dishes as $dish) { ?>
           <?php if($dish->categoryId === $category->categoryId){ ?>
-            <h2 class="CategoryName"><?=$category->name?></h2>
             <?php DrawDish($dish); ?>
           <?php } ?>
       <?php } ?>
@@ -118,16 +118,18 @@
 
 <?php function DrawDish(Dish $dish){ ?>
   <div id="dishes">
-    <h6 id="dish-name"><?=$dish->name?> / €<?=number_format($dish->price, 2, '.', '')?></h6>
+    <h4 id="dish-name"><?=$dish->name?></h4>
+    <p id="dish-price"><?=number_format($dish->price, 2, '.', '')?></p>
     <img src="../images/dishes/thumbs_small/<?=$dish->imageId?>.jpg" alt="Screen 1">
-    <p class="DishDescription">
+    <p class="DishIngredients">
       <?=$dish->ingredients?>
-      <?=$dish->isVegan?>
+      </p>
+    <p class="Dish">
+      <?php if($dish->isVegan) echo "Vegan";  
+            else echo "" ?> 
     </p>
-
-  <form action="../actions/action_create_order.php" method="post">
+  <input class="quantity" type="number" value="1">
   <button type="submit" class="registerbtn">Purchase</button>
-  </form>
 </div>
   
 <?php } ?>
@@ -167,6 +169,5 @@ function drawMarkRestaurantAsFavorite(bool $isChecked){ ?>
       <label><input name="isChecked" type="checkbox" class="hide" value="<?=$isChecked?"true":"false"?>" <?=$isChecked? "checked = 'checked'":""?> ></label>
       <button type="submit"><img src="<?=$imageUrl?>" width="20" height="20"></button>
     </form>
-
-
+    
 <?php } ?>

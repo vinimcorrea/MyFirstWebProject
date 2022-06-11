@@ -1,5 +1,4 @@
 const searchRestaurantName = document.querySelector('#search-restaurants')
-//const searchRestaurantName = document.querySelector('#search_restaurant_by_name')
 const searchRestaurantCategory = document.querySelector('#search-restaurant-by-category')
 const searchRestaurantCategorybtn = document.querySelector('#btn-category')
 const favoriteRestaurant = document.querySelector('#favorite-rest')
@@ -7,12 +6,122 @@ const favoriteRestaurant = document.querySelector('#favorite-rest')
 
 const searchDishRestaurant = document.querySelector('#search-dishes')
 
+const dishBuyBtns = document.querySelectorAll('#dishes button')
 
-/*
-favoriteRestaurant.addEventListener('click', () => {
-    toggleFavorite()
-})
-*/
+const confirmOrder = document.querySelector('#confirm-order-now')
+console.log(confirmOrder)
+
+var total;
+
+
+const encodeForAjax = function (data) {
+    return Object.keys(data).map(function (k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+    }).join('&')
+}
+
+if(confirmOrder){
+    confirmOrder.addEventListener('click', async function(){
+        if(window.confirm("Do you want to confirm your order?")){
+        var url = "../api/api_order.php";
+    
+    console.log(total)
+
+    var final = {price: total}
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax(final)
+        }).then(final =>  final.json());
+        } else{
+            e.preventDefault()
+            e.currentTarget.parentElement.parentElement.remove()
+            updateTotal()
+        }
+    })
+    
+}
+
+
+function attachBuyEvents(){
+    for(const button of dishBuyBtns)
+        button.addEventListener('click', function(e){
+            const div = this.parentElement
+            const price = div.querySelector('#dish-price').textContent
+            console.log(price)
+            const name  = div.querySelector('#dish-name').textContent
+            console.log(name)
+            const quantity = div.querySelector('.quantity').value
+            console.log(quantity)
+
+            const row = document.querySelector('#cart table tr[data-id="${id}"]')
+            console.log(row)
+        
+
+
+            if (row) updateRow(row, price, quantity)
+            else addRow(name, price, quantity)
+
+            updateTotal()
+        })
+}
+
+attachBuyEvents()
+
+
+
+
+function addRow(name, price, quantity){
+    const table = document.querySelector('#cart table')
+    const row = document.createElement('tr')
+
+    const nameCell = document.createElement('td')
+    nameCell.textContent = name
+
+    
+
+    const quantityCell = document.createElement('td')
+    quantityCell.textContent = quantity
+
+    const priceCell = document.createElement('td')
+    priceCell.textContent = price
+
+    const totalCell = document.createElement('td')
+    totalCell.textContent = price * quantity
+
+    const deleteCell = document.createElement('td')
+
+    deleteCell.classList.add('delete')
+    deleteCell.innerHTML='<a href="">X</a>'
+    deleteCell.querySelector('a').addEventListener('click', function(e){
+        e.preventDefault()
+        e.currentTarget.parentElement.parentElement.remove()
+        updateTotal()
+    })
+
+    row.appendChild(nameCell)
+    row.appendChild(quantityCell)
+    row.appendChild(priceCell)
+    row.appendChild(totalCell)
+    row.appendChild(deleteCell)
+
+    table.appendChild(row)
+}
+
+function updateRow(row, price, quantity){
+    const quantityCell = row.querySelector('td:nth-child(2)')
+    const totalCell = row.querySelector('td:nth-child(4)')
+}
+
+function updateTotal(){
+    const rows = document.querySelectorAll('#cart table > tr')
+    const values = [...rows].map(r =>parseFloat(r.querySelector('td:nth-child(4)').textContent, 10))
+    total = values.reduce((t, v) => t+v, 0)
+    document.querySelector('#cart table tfoot th:last-child').textContent = total
+}
+
 if(favoriteRestaurant){
     favoriteRestaurant.addEventListener('click', async function(){
         console.log(this.value)

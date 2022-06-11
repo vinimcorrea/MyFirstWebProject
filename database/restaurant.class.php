@@ -222,6 +222,27 @@ class Restaurant {
         return false;
     }
 
+    public static function getFavoriteRestaurants(PDO $db, string $customerId) : array{
+        $stmt = $db->prepare('SELECT Restaurant.RestaurantId, RestaurantName, Price, CategoryId, ImageId FROM Restaurant, FavoriteRestaurant  
+        WHERE Restaurant.RestaurantId = FavoriteRestaurant.RestaurantId
+        AND CustomerId = ?');
+        $stmt->execute(array($customerId));
+
+        $restaurants = array();
+        while ($restaurant = $stmt->fetch()) {
+            $restaurants[] = new Restaurant(
+                $restaurant['RestaurantId'],
+                $restaurant['RestaurantName'],
+                $restaurant['Price'],
+                $restaurant['CategoryId'],
+                $restaurant['ImageId']
+            );
+        }
+
+        return $restaurants;
+
+    }
+
 
 }
 

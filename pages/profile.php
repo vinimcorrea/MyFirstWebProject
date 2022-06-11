@@ -4,7 +4,7 @@
   require_once(__DIR__ . '/../utils/session.php');
   $session = new Session();
 
-  if (!$session->isLoggedIn()) die(header('Location: ../index.php'));
+  if (!$session->isLoggedIn()) die(http_response_code(403));
 
   require_once(__DIR__ . '/../database/address.class.php');
   require_once(__DIR__ . '/../database/user.class.php');
