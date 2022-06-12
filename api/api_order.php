@@ -11,7 +11,6 @@
     
     require_once(__DIR__ . '/../database/user.class.php');
     require_once(__DIR__ . '/../database/restaurant.class.php');
-    require_once(__DIR__ . '/../database/category.class.php');
     require_once(__DIR__ . '/../database/address.class.php');
     require_once(__DIR__ . '/../database/order.class.php');
 
@@ -27,5 +26,6 @@
 
     Order::createOrder($db, $restaurantId, $customerId, floatval($_POST['price']), "teste", $address->id);
 
-    header('Location: ../pages/favorites.php');
+    $_SESSION['order-id'] = $db->lastInsertId();
+
 ?>

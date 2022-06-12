@@ -45,6 +45,46 @@ class Order
         ]));
     }
 
+    static function getOrder(PDO $db, int $restaurantId, string $customerId, float $price, string $note, int $customer_addressId) : Order
+    {
+    
+        $date = new DateTime('now');
+        $stmt = $db->prepare('
+        INSERT INTO _Order(CustomerId, RestaurantId, TotalPrice, DateTime, Status, Note, AddressId) 
+        VALUES(:CustomerId, :RestaurantId, :TotalPrice, :DateTime, :Status, :Note, :AddressId)');
+
+    
+        if($stmt->execute([
+            ':CustomerId'       => $customerId,
+            ':RestaurantId'     => $restaurantId,
+            ':TotalPrice'       => $price,
+            ':DateTime'         => $date->format('d-M-Y H:i:s'),
+            ':Status'           => "Received",
+            ':Note'             => $note,   
+            ':AddressId'        => $customer_addressId
+        ]));
+    }
+
+    static function getOwnerOrders(PDO $db, int $restaurantId, string $customerId, float $price, string $note, int $customer_addressId) : array
+    {
+    
+        $date = new DateTime('now');
+        $stmt = $db->prepare('
+        INSERT INTO _Order(CustomerId, RestaurantId, TotalPrice, DateTime, Status, Note, AddressId) 
+        VALUES(:CustomerId, :RestaurantId, :TotalPrice, :DateTime, :Status, :Note, :AddressId)');
+
+    
+        if($stmt->execute([
+            ':CustomerId'       => $customerId,
+            ':RestaurantId'     => $restaurantId,
+            ':TotalPrice'       => $price,
+            ':DateTime'         => $date->format('d-M-Y H:i:s'),
+            ':Status'           => "Received",
+            ':Note'             => $note,   
+            ':AddressId'        => $customer_addressId
+        ]));
+    }
+
 
 
 }

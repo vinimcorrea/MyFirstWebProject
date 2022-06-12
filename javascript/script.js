@@ -23,18 +23,33 @@ const encodeForAjax = function (data) {
 if(confirmOrder){
     confirmOrder.addEventListener('click', async function(){
         if(window.confirm("Do you want to confirm your order?")){
-        var url = "../api/api_order.php";
+        const rows = document.querySelectorAll("#cart > table > tr");   
+        var url1 = "../api/api_order.php";
+        var url2 = "../api/api_dish_order.php";
     
     console.log(total)
 
     var final = {price: total}
-    fetch(url, {
+    console.log(final)
+    fetch(url1, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: encodeForAjax(final)
         }).then(final =>  final.json());
+    for(const row of rows){
+        let quantity = {dishQuantity: row.children.item(2).textContent,
+                        dishId:         row.firstChild.innerHTML};
+        console.log(quantity);
+        fetch(url2, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: encodeForAjax(quantity)
+        })
+}
         } else{
             e.preventDefault()
             e.currentTarget.parentElement.parentElement.remove()
@@ -49,20 +64,18 @@ function attachBuyEvents(){
     for(const button of dishBuyBtns)
         button.addEventListener('click', function(e){
             const div = this.parentElement
+
+            const id = div.getAttribute('dish-id')
             const price = div.querySelector('#dish-price').textContent
-            console.log(price)
             const name  = div.querySelector('#dish-name').textContent
-            console.log(name)
             const quantity = div.querySelector('.quantity').value
-            console.log(quantity)
 
             const row = document.querySelector('#cart table tr[data-id="${id}"]')
-            console.log(row)
         
 
 
             if (row) updateRow(row, price, quantity)
-            else addRow(name, price, quantity)
+            else addRow(id, name, price, quantity)
 
             updateTotal()
         })
@@ -73,14 +86,16 @@ attachBuyEvents()
 
 
 
-function addRow(name, price, quantity){
+function addRow(id, name, price, quantity){
     const table = document.querySelector('#cart table')
     const row = document.createElement('tr')
 
+    const idCell = document.createElement('td')
+    idCell.classList.add('hide')
+    idCell.textContent = id
+
     const nameCell = document.createElement('td')
     nameCell.textContent = name
-
-    
 
     const quantityCell = document.createElement('td')
     quantityCell.textContent = quantity
@@ -101,6 +116,7 @@ function addRow(name, price, quantity){
         updateTotal()
     })
 
+    row.appendChild(idCell)
     row.appendChild(nameCell)
     row.appendChild(quantityCell)
     row.appendChild(priceCell)
@@ -117,7 +133,7 @@ function updateRow(row, price, quantity){
 
 function updateTotal(){
     const rows = document.querySelectorAll('#cart table > tr')
-    const values = [...rows].map(r =>parseFloat(r.querySelector('td:nth-child(4)').textContent, 10))
+    const values = [...rows].map(r =>parseFloat(r.querySelector('td:nth-child(5)').textContent, 10))
     total = values.reduce((t, v) => t+v, 0)
     document.querySelector('#cart table tfoot th:last-child').textContent = total
 }

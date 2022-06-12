@@ -117,7 +117,7 @@
 <?php } ?>
 
 <?php function DrawDish(Dish $dish){ ?>
-  <div id="dishes">
+  <div id="dishes" dish-id="<?=$dish->dishId?>">
     <h4 id="dish-name"><?=$dish->name?></h4>
     <p id="dish-price"><?=number_format($dish->price, 2, '.', '')?></p>
     <img src="../images/dishes/thumbs_small/<?=$dish->imageId?>.jpg" alt="Screen 1">
@@ -169,5 +169,5 @@ function drawMarkRestaurantAsFavorite(bool $isChecked){ ?>
       <label><input name="isChecked" type="checkbox" class="hide" value="<?=$isChecked?"true":"false"?>" <?=$isChecked? "checked = 'checked'":""?> ></label>
       <button type="submit"><img src="<?=$imageUrl?>" width="20" height="20"></button>
     </form>
-    
+
 <?php } ?>
