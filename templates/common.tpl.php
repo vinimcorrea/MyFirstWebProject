@@ -22,7 +22,7 @@
     
     <?php if($session->isLoggedin()){?>
       <div class="user-orders">
-        <a href="/../pages/add_order.php">My Orders</a>
+        <a href="/../pages/order.php">My Orders</a>
       </div>
       <div class="user-favorites">
         <a href="/../pages/favorites.php">Favorites</a>

@@ -20,3 +20,13 @@
       <button type="submit" id="confirm-order-now">Order</button>
     </section>
 <?php } ?>
+
+<?php function drawNotOrdered() { ?>
+  <p id="no-order"> No orders around here ;(</p>
+<?php } ?>
+
+<?php function drawOrderedCustomer(Order $order, array $dishes) { ?>
+  <h2>Your Order</h2>
+  <?=$order->price?>
+
+<?php } ?>

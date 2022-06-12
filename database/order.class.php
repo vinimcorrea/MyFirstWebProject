@@ -6,13 +6,13 @@ class Order
     public string   $customerId;
     public int      $restaurantId;
     public float    $price;
-    public DateTime $Time;
+    public string   $datetime;
     public string   $status;
     public string   $note;
     public ?int     $customer_addressId;  
 
 
-    public function __construct(int $orderId, string $customerId, int $restaurantId, float $price, DateTime $datetime,  string $status, string $note, int $customer_addressId)
+    public function __construct(int $orderId, string $customerId, int $restaurantId, float $price, string $datetime,  string $status, string $note, int $customer_addressId)
     {
         $this->orderId = $orderId;
         $this->customerId = $customerId;
@@ -38,32 +38,37 @@ class Order
             ':CustomerId'       => $customerId,
             ':RestaurantId'     => $restaurantId,
             ':TotalPrice'       => $price,
-            ':DateTime'         => $date->format('d-M-Y H:i:s'),
+            ':DateTime'         => (string) $date->format('d-M-Y H:i:s'),
             ':Status'           => "Received",
             ':Note'             => $note,   
             ':AddressId'        => $customer_addressId
         ]));
     }
 
-    static function getOrder(PDO $db, int $restaurantId, string $customerId, float $price, string $note, int $customer_addressId) : Order
+    public static function getOrderWithCustomerId(PDO $db, string $id): Order
     {
-    
-        $date = new DateTime('now');
         $stmt = $db->prepare('
-        INSERT INTO _Order(CustomerId, RestaurantId, TotalPrice, DateTime, Status, Note, AddressId) 
-        VALUES(:CustomerId, :RestaurantId, :TotalPrice, :DateTime, :Status, :Note, :AddressId)');
+        SELECT OrderId, CustomerId, RestaurantId, TotalPrice, DateTime, Status, Note, AddressId
+        FROM _Order
+        WHERE CustomerId = ?');
 
-    
-        if($stmt->execute([
-            ':CustomerId'       => $customerId,
-            ':RestaurantId'     => $restaurantId,
-            ':TotalPrice'       => $price,
-            ':DateTime'         => $date->format('d-M-Y H:i:s'),
-            ':Status'           => "Received",
-            ':Note'             => $note,   
-            ':AddressId'        => $customer_addressId
-        ]));
+        $stmt->execute(array($id));
+        
+        $order = $stmt->fetch();
+
+        return new Order(
+            $order['OrderId'],
+            $order['CustomerId'],
+            $order['RestaurantId'],
+            $order['TotalPrice'],
+            $order['DateTime'],
+            $order['Status'],
+            $order['Note'],
+            $order['AddressId']
+        );
     }
+
+
 
     static function getOwnerOrders(PDO $db, int $restaurantId, string $customerId, float $price, string $note, int $customer_addressId) : array
     {
@@ -108,22 +113,6 @@ class OrderedDish
     }
 
 
-    static function getOrderDishes(PDO $db, int $orderId): array
-    {
-        $stmt = $db->prepare('
-        SELECT Dish.DishId, Name, Price, Ingredients, Vegan, RestaurantId, ImageId
-        FROM OrderedDish, Dish 
-        WHERE Dish.DishId = OrderedDish.DishId
-        AND OrderId = ?');
-        $stmt->execute(array($orderId));
-        $dishes = array();
-
-        while ($order = $stmt->fetch()) {
-            $dishes[] = Dish::getDish($db, $order['dishId']);
-        }
-
-        return $dishes;
-    }
 
     static function addDishToOrder(PDO $db, $orderId, $dishId, $quantity)
     {

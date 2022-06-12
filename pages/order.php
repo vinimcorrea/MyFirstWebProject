@@ -6,19 +6,28 @@
 
  require_once(__DIR__ . '/../database/connection.db.php');
 
- require_once(__DIR__ . '/../database/restaurant.class.php');
+ require_once(__DIR__ . '/../database/order.class.php');
+ require_once(__DIR__ . '/../database/dish.class.php');
 
  require_once(__DIR__ . '/../templates/common.tpl.php');
- require_once(__DIR__ . '/../templates/profile.tpl.php');
+ require_once(__DIR__ . '/../templates/order.tpl.php');
 
  $db = getDatabaseConnection();
 
  $email = $session->getEmail();
 
- $restaurants = Restaurant::getFavoriteRestaurants($db, $email);
+
+ $order = Order::getOrderWithCustomerId($db, $email);
+
 
 
  drawHeader($session);
+ if($order != null){
+    $ordered_dishes = Dish::getOrderDishes($db, $order->orderId);
+    drawOrderedCustomer($order, $ordered_dishes);
+ } else {
+     drawNotOrdered();
+ }
  drawFooter();
 
 

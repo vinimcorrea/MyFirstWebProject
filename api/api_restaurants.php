@@ -18,7 +18,7 @@ switch($mode){
         break;
     default:
         if($_GET['search'] == 'All'){
-            $restaurants = Restaurant::getRestaurants($db, 10);
+            $restaurants = Restaurant::getRestaurants($db, 100);
             break;
         }
         $restaurants = Restaurant::searchRestaurantsByName($db, $_GET['search']);
