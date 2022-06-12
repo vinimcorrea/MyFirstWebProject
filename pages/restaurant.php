@@ -12,6 +12,7 @@
   require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../database/address.class.php');
   require_once(__DIR__ . '/../database/dish.class.php');
+  require_once(__DIR__ . '/../database/order.class.php');
 
 
   require_once(__DIR__ . '/../templates/common.tpl.php');
@@ -36,13 +37,28 @@
 
   $address     = Address::getAddressWithResId($db, intval($_GET['id']));
 
+  $userAddress = Address::getAddressWithEmail($db, $session->getEmail());
   $dishes      = Dish::getRestaurantDishes($db, $restaurant->restaurantId);
   $categories  = Category::getCategories($db, 10);
 
   $_SESSION['id'] = $restaurant->restaurantId;
 
+  $order = Order::getOrderWithCustomerId($db, $session->getEmail());
+
   drawHeader($session);
   drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner, $session);
-  if($session->isLoggedIn()) drawOrderTable();
+  if($session->isLoggedIn()){
+    if($userAddress != null){
+      if($order == null){
+        drawOrderTable();
+      }
+      else {
+        drawOrderBeingProcessed();
+      }
+    }
+    else {
+      drawNoAddress();
+    }
+  }
   drawFooter();                                                                                                                       
 ?>

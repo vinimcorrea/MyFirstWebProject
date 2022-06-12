@@ -150,25 +150,13 @@ class Dish{
     static function getOrderDishes(PDO $db, int $orderId): array
     {
         $stmt = $db->prepare('
-        SELECT Dish.DishId, Name, Price, Ingredients, Vegan, CategoryId, RestaurantId, ImageId
+        SELECT Name, quantity 
         FROM OrderedDish, Dish 
         WHERE Dish.DishId = OrderedDish.DishId
         AND OrderId = ?');
         $stmt->execute(array($orderId));
-        $dishes = array();
-
-        while ($dish = $stmt->fetch()) {
-            $restaurants[] = new Dish(
-                $dish['DishId'],
-                $dish['Name'],
-                $dish['Price'],
-                $dish['Ingredients'],
-                (bool) $dish['Vegan'],
-                $dish['CategoryId'],
-                $dish['RestaurantId'],
-                $dish['ImageId']
-            );
-        }
+        
+        $dishes = $stmt->fetchAll();
 
         return $dishes;
     }

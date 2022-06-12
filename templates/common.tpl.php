@@ -30,7 +30,7 @@
 
       <?php if($session->isOwner()){?>
         <div class="user-orders">
-        <a href="/../index.php">Orders Received</a>
+        <a href="/../pages/order_received.php">Orders Received</a>
       </div>
       <?php } ?>
       <div class="login_register">

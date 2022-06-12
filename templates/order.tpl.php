@@ -26,7 +26,77 @@
 <?php } ?>
 
 <?php function drawOrderedCustomer(Order $order, array $dishes) { ?>
-  <h2>Your Order</h2>
+  <div class="order-done">
+  <h2>Your Order status: <?=$order->status?></h2>
+  <p id="date-order">
+  <?=$order->datetime?>
+  </p>
+  <p id="final-order-price">
   <?=$order->price?>
+  </p>
 
+  <?php foreach($dishes as $dish){ ?>
+    <p>
+    <?=$dish['quantity']?>x
+    <?=$dish['Name']?>
+  </p>
+  <?php }?>
+  </div>
+<?php } ?>
+
+<?php function drawOrderedOwner(array $dishes, $order, Restaurant $restaurant){ ?>
+    <div>
+      <label>Date and time of order:</label>
+      <?=$order['DateTime']?>
+      <div>
+      <label>Food order:</label>
+      <?php foreach($dishes as $dish){ ?>
+        <?=$dish['quantity']?>x
+        <?=$dish['Name']?>
+      <?php }?>
+      </div>
+      <label>Price:</label>
+      <?=$order['TotalPrice']?>
+      <div>
+      <label>Customer name:</label>
+      <?=$order['FirstName']?>
+      <?=$order['LastName']?>
+      </div>
+      <div>
+      <label>Customer note:</label>
+      <?=$order['Note']?>
+      </div>
+      <div>
+        <label>Customer address:</label>
+        <?=$order['AddressLineOne']?>
+        <?=$order['AddressLineTwo']?>
+        <?=$order['City']?>
+        <?=$order['Country']?>
+        <?=$order['postalcode']?>
+      </div>
+      <form method="post" action="../actions/action_change_order_status.php">
+      <label>Change order status:</label>
+      <select name="change-order-status">
+          <option value="Received">Received</option>
+          <option value="Preparing">Preparing</option>
+          <option value="Ready">Ready</option>
+          <option value="Delivered">Delivered</option>
+      </select>
+      <button type="submit">submit</button>
+      </form>
+    </div>
+
+<?php }?>
+
+<?php function drawNoAddress() { ?>
+  <p id="no-address">Add your address to create your first order!</p>
+<?php } ?>
+
+<?php function drawOrderBeingProcessed() { ?>
+  <p id="order-processed">Your order is being processed! See it's status in "My Orders"</p>
+<?php } ?>
+
+<?php function drawRestaurantOrder(Restaurant $restaurant){ ?>
+  <h2>You have received orders!</h2>
+  <h4>From your restaurant: <?=$restaurant->restaurantName?></h4>
 <?php } ?>

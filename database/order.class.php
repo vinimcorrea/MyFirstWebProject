@@ -68,26 +68,28 @@ class Order
         );
     }
 
+    function save(PDO $db){
+        $stmt = $db->prepare('UPDATE _Order SET CustomerId = ?, RestaurantId = ?, TotalPrice = ?, DateTime = ?, Status = ?, Note = ?, AddressId = ? WHERE OrderId = ?');
+
+        $stmt->execute(array($this->customerId, $this->restaurantId, $this->price, $this->datetime, $this->status, $this->note, $this->customer_addressId, $this->orderId));
+    }
 
 
-    static function getOwnerOrders(PDO $db, int $restaurantId, string $customerId, float $price, string $note, int $customer_addressId) : array
+
+    static function getRestaurantOrders(PDO $db, int $restaurantId): array
     {
-    
-        $date = new DateTime('now');
         $stmt = $db->prepare('
-        INSERT INTO _Order(CustomerId, RestaurantId, TotalPrice, DateTime, Status, Note, AddressId) 
-        VALUES(:CustomerId, :RestaurantId, :TotalPrice, :DateTime, :Status, :Note, :AddressId)');
+        SELECT OrderId, CustomerId, TotalPrice, DateTime, Status, Note, FirstName, LastName, AddressLineOne, AddressLineTwo, City, Country, postalcode
+        FROM _Order, Address, User  
+        WHERE _Order.AddressId = Address.AddressId
+        AND User.Email = CustomerId
+        AND restaurantId = ?');
+        $stmt->execute(array($restaurantId));
 
-    
-        if($stmt->execute([
-            ':CustomerId'       => $customerId,
-            ':RestaurantId'     => $restaurantId,
-            ':TotalPrice'       => $price,
-            ':DateTime'         => $date->format('d-M-Y H:i:s'),
-            ':Status'           => "Received",
-            ':Note'             => $note,   
-            ':AddressId'        => $customer_addressId
-        ]));
+        $orders = $stmt->fetchAll();
+
+        return $orders;
+
     }
 
 
@@ -125,6 +127,10 @@ class OrderedDish
             ':DishId'          => $dishId,
             ':quantity'        => $quantity
         ]); 
+    }
+
+    static function updateStatus(PDO $db, int $orderId, $status){
+
     }
 }
 
