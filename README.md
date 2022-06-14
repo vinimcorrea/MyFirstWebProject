@@ -18,6 +18,8 @@ Ask and receive wherever you are.
 - [x] List Customer Orders
 - [x] Change Order State
 - [x] Search Restaurants
+- [x] Search Dishes
+- [x] Search Restaurants by Category
 - [x] Order Dishes
 - [x] List My Orders
 - [x] Mark Restaurant as Favourite
