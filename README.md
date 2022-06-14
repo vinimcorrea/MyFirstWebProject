@@ -26,10 +26,10 @@ Ask and receive wherever you are.
 
 ## Credentials
 
-admin@admin.com     / admin
-normal@customer.com / 1234
-no@orders.com       / 1234
-normal@owner.com.   / 1234
+- admin@admin.com     / admin
+- normal@customer.com / 1234
+- no@orders.com       / 1234
+- normal@owner.com.   / 1234
 
 
 
