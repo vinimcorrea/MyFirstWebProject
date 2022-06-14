@@ -20,7 +20,7 @@
 
     $orderId = $_POST['package-order-id'];
 
-    Order::getOrderWithId($db, (int) $orderId);
+    $order = Order::getOrderWithId($db, (int) $orderId);
 
     $order->status = $status;
     $order->save($db);

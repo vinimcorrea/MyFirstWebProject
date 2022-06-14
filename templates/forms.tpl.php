@@ -65,9 +65,9 @@
     <div>
       <select name="rest-price" class="select-form" required">
         <option value="" disabled selected>Select Price</option>
-        <option value="cheap">$</option>
-        <option value="medium">$$</option>
-        <option value="expensive">$$$</option>
+        <option value="$">$</option>
+        <option value="$$">$$</option>
+        <option value="$$$">$$$</option>
       </select>
     </div>
     
@@ -145,7 +145,9 @@
     <div>
       <input type="text" name="image_title" placeholder="Enter Image Title">
     </div>
+
     <input type="file" name="dish-image">
+
     <div>
     <button type="submit" id="register-btn">Register</button>
     </div>
@@ -217,7 +219,7 @@
 <?php } ?>
 
 <?php function drawEditRestaurantForm(array $categories){ ?>
-  <form action="../actions/action_edit_restaurant.php" method="post">
+  <form action="../actions/action_edit_restaurant.php" method="post" enctype="multipart/form-data">
   <div class="container">
     <h1>Edit Your Restaurant</h1>
 
@@ -228,9 +230,9 @@
     <div>
       <select name="rest-price" class="select-form" required">
         <option value="" disabled selected>Select Price</option>
-        <option value="cheap">$</option>
-        <option value="medium">$$</option>
-        <option value="expensive">$$$</option>
+        <option value="$">$</option>
+        <option value="$$">$$</option>
+        <option value="$$$">$$$</option>
       </select>
     </div>
     
@@ -274,4 +276,26 @@
       <button type="submit" id="register-btn">Save</button>
     </div>
 </form>
+<?php } ?>
+
+<?php function drawCategoryForm() { ?>
+  <form action="../actions/action_create_category.php" method="post" enctype="multipart/form-data">
+    <div class="container">
+      <h1 id="login-phrase">Create Category</h1>
+
+      <div>
+        <input type="text" placeholder="Enter Category Name" name="ctg-name" required>
+      </div>
+
+      <div>
+        <input type="text" name="image_title" placeholder="Image Title">
+      </div>
+
+      <input type="file" name="ctg-image">
+
+      <div>
+        <button type="submit" id="register-btn">Save</button>
+      </div>  
+    </div>
+  </form>
 <?php } ?>

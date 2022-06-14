@@ -22,7 +22,7 @@
       <div class="meat"></div>
       <div class="bottom"></div>
   </label>
-  
+
   <a href="../index.php"><img src="../images/logo/deliver-logo.png" id="logo" width="120" "alt="my logo"/></a>
   <div class="login_register">
     <a href="/../pages/profile.php">Hello, <?= $session->getName() ?></a>
@@ -39,6 +39,9 @@
       <?php if($session->isOwner()){?>
       <div class="user-options">
         <a href="/../pages/order_received.php">Orders Received</a>
+      </div>
+      <div class="user-options">
+        <a href="../pages/add_category.php" class="edit_profile">Add Category</a>
       </div>
       <div class="user-options">
         <a href="../pages/add_restaurant.php" class="edit_profile">Add restaurant</a>
@@ -63,10 +66,27 @@
 <?php function drawFooter() { ?>
     </main>
     <hr>
-    <footer>
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="row">
+          <div class="col-md-8 col-sm-6 col-xs-12">
+            <p class="copyright-text">Copyright &copy; 2022 All Rights Reserved by 
+         <a href="#">LTW FEUP</a>.
+            </p>
+          </div>
 
-      LTW  &copy; 2022
-    </footer>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <ul class="social-icons">
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+              <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+              <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+              <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
+              <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>   
+            </ul>
+          </div>
+        </div>
+      </div>
+</footer>
   </body>
 </html>
 <?php } ?>

@@ -12,7 +12,7 @@
   require_once(__DIR__ . '/../templates/forms.tpl.php');
 
   $db = getDatabaseConnection();
-  $categories  = Category::getCategories($db, 3);
+  $categories  = Category::getCategories($db, 1000);
 
 
   drawHeader($session);

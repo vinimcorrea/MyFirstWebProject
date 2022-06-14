@@ -79,7 +79,8 @@ class Restaurant {
 
 
     static function getRestaurantOwnerId(PDO $db, int $id) : string {
-        $stmt = $db->prepare('SELECT OwnerId 
+        $stmt = $db->prepare('
+        SELECT OwnerId 
         FROM RestaurantOwner
         WHERE RestaurantId = ?');
         $stmt->execute(array($id));
@@ -163,7 +164,7 @@ class Restaurant {
 
 
 
-    static function createRestaurant(PDO $db, User $user, string $restaurantName, string $price, int $categoryId, int $imageId){
+    static function createRestaurant(PDO $db, User $user, string $restaurantName, string $price, int $categoryId, int $imageId, int $addressId){
         
         $stmt = $db-> prepare('
         INSERT INTO Restaurant(RestaurantName, Price, CategoryId, ImageId) 
@@ -181,12 +182,22 @@ class Restaurant {
             echo "Error while adding record";
         }
 
+        $id = $db->lastInsertId();
+
+        $stmt = $db-> prepare('
+        INSERT INTO RestaurantAddress(RestaurantId, AddressId) 
+        VALUES(:RestaurantId, :AddressId)'
+        );
+
+        $stmt->execute([
+            ':RestaurantId' => $id,
+            ':AddressId'    => $addressId   
+        ]);
+
         $stmt = $db-> prepare('
         INSERT INTO RestaurantOwner(OwnerId, RestaurantId) 
         VALUES(:OwnerId, :RestaurantId)'
          );
-
-        $id = $db->lastInsertId();
 
          if($stmt->execute([
             ':OwnerId'       => $user->email,

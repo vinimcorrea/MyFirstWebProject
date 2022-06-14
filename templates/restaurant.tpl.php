@@ -17,11 +17,11 @@
       <p id="title-main-page"> What you need is here.</p>
       <p id="second-title-main-page">Ask and receive wherever you are.</p>
       <form class="mainsearch" onsubmit="event.preventDefault();" role="search">
-        <input id="search-restaurants" type="search" placeholder="Search..." autofocus required />  
+        <input id="search-restaurants" type="search" placeholder="Search Restaurants..." autofocus required />  
       </form>
     </div>
   </header>
-  <h2 id="title-ctg">Categories</h2>
+  <h2 class="title">Categories</h2>
   <div class="categories-select">
     <form method="get">
     <select name="rest-category" id="search-restaurant-by-category">
@@ -32,7 +32,7 @@
     </select>
     </form>
   </div>  
-  <h2 id="title-rest">Restaurants</h2>
+  <h2 class="title">Restaurants</h2>
   <section id="restaurants">
     <?php foreach($restaurants as $restaurant) { ?> 
       <div class="rest_items">
@@ -52,56 +52,37 @@
   </section>
 <?php } ?>
 
-<?php function drawRestaurant(Restaurant $restaurant, array $categories, array $dishes, Address $address, bool $isOwner, Session $session) { ?>
-
-  <?php if($isOwner) {?>
-    <div> 
-      <a href="../pages/edit_restaurant.php">edit restaurant</a>
-    </div>
-
-    <div>
-      <a href="../pages/add_dish.php">add dish</a>
-    </div>
-  <?php } ?>
+<?php function drawRestaurant(Restaurant $restaurant, array $categories, array $dishes, Address $address, bool $isOwner, int $bannerImageId, Session $session) { ?>
 
 
 
   <header class="restBanner">
-    <img src="../images/restaurants/originals/<?=$restaurant->imageId?>.jpg" alt="banner" <?=$restaurant->restaurantId?>">
+    <img src="../images/banners/originals/<?=$bannerImageId?>.jpg" alt="banner" <?=$bannerImageId?>">
   </header>
   <div class="rest_design">
+    <div id="design-right">
     <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 1" <?=$restaurant->restaurantId?>">
     <h1 class="RestaurantName"><?=$restaurant->restaurantName?></h1>
+    <p id="rest-price-cifer"><?=$restaurant->price?></p>
     
   <?php if ($session->isLoggedIn())
     drawMarkRestaurantAsFavorite(Restaurant::isFavoriteRestaurantDB($session->getEmail(), $restaurant->restaurantId));
     ?>
+    </div>
+    <?php if($isOwner) {?>
+    <div id="restaurant-tools">  
+      <a href="../pages/edit_restaurant.php"><img src="../images/assets/pencil-icon.png" width="50" height="50"></a>
+      <a href="../pages/add_dish.php"><img src="../images/assets/add-dish-icon.png" width="50" height="50" id="add-dish-icon"></a>
+    </div>
+  <?php } ?>
   </div>
 
-  <div>
-                <?= $address->addressOne ?>
-            </div>
-
-            <div>
-                <?= $address->addressTwo ?>
-            </div>
-
-            <div>
-                <?= $address->city?>
-            </div>
-
-            <div>
-                <?= $address->country?>
-            </div>
-
-            <div>
-                <?= $address->postalcode?>
-          </div>
+  <div class="user-data">
+    <p><?= $address->addressOne?>, <?= $address->addressTwo?>. <?= $address->city?></p>
   </div>
 
+  <input id="search-dishes" type="search" placeholder="Search Dishes" autofocus required/>
   <section id="restaurants">
-  <input id="search-dishes" type="search" placeholder="Search..." autofocus required/>
-  <div class="RestaurantCategory">
     <?php foreach($categories as $category) { ?>
       <?php drawCategory($category, $dishes); ?>
       <?php } ?>
@@ -110,40 +91,49 @@
 <?php } ?>
 
 <?php function drawCategory(Category $category, array $dishes){ ?>
-    <h2 class="CategoryName"><?=$category->name?></h2>
+    <?php $alreadyDrawnCategoryTitle = false?>
+    <div class="restaurant-container">
       <?php foreach($dishes as $dish) { ?>
           <?php if($dish->categoryId === $category->categoryId){ ?>
+            <?php if(!$alreadyDrawnCategoryTitle) {?>
+              <div id="category-title">
+              <h2 class="title"><?=$category->name?></h2>
+              </div>
+              <?php $alreadyDrawnCategoryTitle =true;?>
+            <?php } ?>
+            <div class="RestaurantCategory" dish-id="<?=$dish->dishId?>">
             <?php DrawDish($dish); ?>
           <?php } ?>
+            </div>
       <?php } ?>
+    </div>
 <?php } ?>
 
 <?php function DrawDish(Dish $dish){ ?>
-  <div id="dishes" dish-id="<?=$dish->dishId?>">
-    <h4 id="dish-name"><?=$dish->name?></h4>
-    <p id="dish-price"><?=number_format($dish->price, 2, '.', '')?></p>
     <img src="../images/dishes/thumbs_small/<?=$dish->imageId?>.jpg" alt="Screen 1">
+    <div>
+    <h3 id="dish-name"><?=$dish->name?></h3>
+    <p id="dish-price"><?=number_format($dish->price, 2, '.', '')?></p>
     <p class="DishIngredients">
       <?=$dish->ingredients?>
-      </p>
-    <p class="Dish">
-      <?php if($dish->isVegan) echo "Vegan";  
-            else echo "" ?> 
     </p>
-  <input class="quantity" type="number" value="1">
-  <button type="submit" class="registerbtn">Purchase</button>
 </div>
+  <input class="quantity" type="number" value="1" min="1">
+  <button type="submit" id="register-btn">Purchase</button>
   
 <?php } ?>
 
 
 <?php function drawOwnerRestaurants(array $restaurants, array $categories){ ?>
-  <h3 id="title_rest"> My Restaurants </h3>
+  <hr>
+  <h2 class="title">My Restaurants</h2>
   <section id="restaurants">
     <?php foreach($restaurants as $restaurant) { ?>
       
       <div class="rest_items">
-        <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 2" <?=$restaurant->restaurantId?>">
+        <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
+          <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 2" <?=$restaurant->restaurantId?>">
+        </a>
         <span class="caption">
           <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
               <?=$restaurant->restaurantName?>
@@ -169,7 +159,7 @@ function drawMarkRestaurantAsFavorite(bool $isChecked){ ?>
             ?>
     <form action="../actions/action_favorite_restaurant.php" method="post">
       <label><input name="isChecked" type="checkbox" class="hide" value="<?=$isChecked?"true":"false"?>" <?=$isChecked? "checked = 'checked'":""?> ></label>
-      <button type="submit"><img src="<?=$imageUrl?>" width="20" height="20"></button>
+      <button type="submit" id="favorite-btn"><img src="<?=$imageUrl?>" width="20" height="20"></button>
     </form>
 
 <?php } ?>

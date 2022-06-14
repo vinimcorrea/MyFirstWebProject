@@ -21,7 +21,7 @@
   if($user->isOwner != 1) die(header('Location: ../index.php'));
 
 
-  $categories  = Category::getCategories($db, 3);
+  $categories  = Category::getCategories($db, 10000);
 
   drawHeader($session);
   drawDishForm($categories);

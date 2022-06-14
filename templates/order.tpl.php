@@ -14,10 +14,9 @@
           <tr><th colspan="1">Total:</th><th id="total-price-order">0</th></tr>
         </tfoot>
       </table>
-      <input typ
-      <input type="text" id="order-note" placeholder="leave an optional note"> 
-      <label id="confirm-order">Confirm Order</label>
-      <button type="submit" id="confirm-order-now">Order</button>
+      <div id="order-btn-container">
+      <button type="submit" id="order-btn">Order</button>
+      </div>  
     </section>
 <?php } ?>
 
@@ -26,12 +25,13 @@
 <?php } ?>
 
 <?php function drawOrderedCustomer(Order $order, array $dishes) { ?>
-  <div class="order-done">
-  <h2>Your Order status: <?=$order->status?></h2>
+  <div class="user-order">
+  <h2 class="order-customer-title">Your Order status: <?=$order->status?></h2>
   <p id="date-order">
   <?=$order->datetime?>
   </p>
-  <p id="final-order-price">
+  <label>Total Price:</label>
+  <p id="dish-price">
   <?=$order->price?>
   </p>
 
@@ -45,55 +45,66 @@
 <?php } ?>
 
 <?php function drawOrderedOwner(array $dishes, $order, Restaurant $restaurant){ ?>
-    <div>
-      <label>Date and time of order:</label>
-      <?=$order['DateTime']?>
-      <div>
-      <label>Food order:</label>
+   <div class="order-organization">
+    <div class ="user-data">
+      <h4>Date and Time</h4>
+      <p><?=$order['DateTime']?></p>
+      </div>
+      <div class ="user-data">
+      <h4>Food Order</h4>
+      <p>
       <?php foreach($dishes as $dish){ ?>
         <?=$dish['quantity']?>x
         <?=$dish['Name']?>
       <?php }?>
+      </p>
       </div>
-      <label>Price:</label>
-      <?=$order['TotalPrice']?>
-      <div>
-      <label customer-order-id="<?=$order['OrderId']?>">Customer name:</label>
+      
+      <div class="user-data">
+      <h4>Price</h4>
+      <p><?=$order['TotalPrice']?></p>
+      </div>
+      <div class="user-data">
+      <h4 customer-order-id="<?=$order['OrderId']?>">Customer Name:</h4>
+      <p>
       <?=$order['FirstName']?>
       <?=$order['LastName']?>
+      </p>
       </div>
-      <div>
-      <label>Customer note:</label>
-      <?=$order['Note']?>
-      </div>
-      <div>
-        <label>Customer address:</label>
+      <div class ="user-data">
+      <h4>Customer Address:</h4>
+      <p>
         <?=$order['AddressLineOne']?>
         <?=$order['AddressLineTwo']?>
         <?=$order['City']?>
         <?=$order['Country']?>
         <?=$order['postalcode']?>
+      </p>
       </div>
+      <div class ="user-data">
         <?php if($order['Status'] == "Delivered") {?>
-          <label>Order is delivered!</label>
+          <h4>Order is delivered!</h4>
           <form method="post" action="../actions/action_delete_order.php">
           <input type="number" name="package-order-id" class="hide" value="<?=$order['OrderId']?>">
-          <button type="submit">delete</button>
+          <button type="submit" id="delete-btn"><img src="../images/assets/delete-icon.jpeg" width="35" height="35"></button>
           </form>
         <?php } else {?>
-          <label>Change order status:</label>
+          <h4>Change Status:</h4>
+          <p><?=$order['Status']?></p>
           <form method="post" action="../actions/action_change_order_status.php">
-          <select name="change-order-status">
+          <select name="change-order-status" class="select-form">
+            <option value="" disabled selected>Select Status</option>
             <option value="Received">Received</option>
             <option value="Preparing">Preparing</option>
             <option value="Ready">Ready</option>
             <option value="Delivered">Delivered</option>
           </select>
-          <input type="number" name="package-order-id" class="hide" value="<?=$order['OrderId']?>">
-          <button type="submit">submit</button>
+          <input type="number" class="hide" name="package-order-id" value="<?=$order['OrderId']?>">
+          <button type="submit" id="register-btn">submit</button>
           </form>
       <?php } ?>
     </div>
+  </div>
 
 <?php }?>
 
@@ -106,6 +117,7 @@
 <?php } ?>
 
 <?php function drawRestaurantOrder(Restaurant $restaurant){ ?>
+  <div id="user-container">
   <h2>You have received orders!</h2>
   <h4>From your restaurant: <?=$restaurant->restaurantName?></h4>
 <?php } ?>

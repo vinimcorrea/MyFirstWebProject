@@ -41,10 +41,14 @@
   $dishes      = Dish::getRestaurantDishes($db, $restaurant->restaurantId);
   $categories  = Category::getCategories($db, 10);
 
+  $restaurantCategory = Category::getCategory($db, $restaurant->categoryId);
+
+  $bannerImageId = $restaurantCategory->imageId;
+
   $_SESSION['id'] = $restaurant->restaurantId;
 
   drawHeader($session);
-  drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner, $session);
+  drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner, $bannerImageId, $session);
   if($session->isLoggedIn()){
     $order = Order::getOrderWithCustomerId($db, $session->getEmail());
     $userAddress = Address::getAddressWithEmail($db, $session->getEmail());

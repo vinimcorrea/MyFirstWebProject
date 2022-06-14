@@ -6,13 +6,18 @@ const favoriteRestaurant = document.querySelector('#favorite-rest')
 
 const searchDishRestaurant = document.querySelector('#search-dishes')
 
-const dishBuyBtns = document.querySelectorAll('#dishes button')
+const dishBuyBtns = document.querySelectorAll('.RestaurantCategory button')
 
-const confirmOrder = document.querySelector('#confirm-order-now')
+const confirmOrder = document.querySelector('#order-btn')
 console.log(confirmOrder)
 
 var total;
 
+function addZeroes(num) {
+    const dec = num.split('.')[1]
+    const len = dec && dec.length > 2 ? dec.length : 2
+    return Number(num).toFixed(len)
+  }
 
 const encodeForAjax = function (data) {
     return Object.keys(data).map(function (k) {
@@ -39,6 +44,8 @@ if(confirmOrder){
         body: encodeForAjax(final)
         }).then(final =>  final.json());
     for(const row of rows){
+        console.log(row.children.item(2).textContent)
+        console.log(row.firstChild.innerHTML)
         let quantity = {dishQuantity: row.children.item(2).textContent,
                         dishId:         row.firstChild.innerHTML};
         console.log(quantity);
@@ -109,7 +116,7 @@ function addRow(id, name, price, quantity){
     const deleteCell = document.createElement('td')
 
     deleteCell.classList.add('delete')
-    deleteCell.innerHTML='<a href="">X</a>'
+    deleteCell.innerHTML='<a href=""><img src="../images/assets/delete-icon.jpeg" width="35" height="35"></a>'
     deleteCell.querySelector('a').addEventListener('click', function(e){
         e.preventDefault()
         e.currentTarget.parentElement.parentElement.remove()
@@ -236,33 +243,84 @@ if(searchDishRestaurant){
         const dishes = await response.json()
         console.log(dishes)
 
-        const firstDiv = document.querySelector('.RestaurantCategory')
-        firstDiv.innerHTML = ''
-    
-        for(const dish of dishes){
-            const h2 = document.createElement('h2')
-            const secondDiv = document.createElement('div')
-            const h6 = document.createElement('h6')
-            const p = document.createElement('p')
-            const img = document.createElement('img')
-            const form = document.createElement('form')
-            const button = document.createElement('button')
+        const section = document.querySelector('#restaurants')
+        section.innerHTML = ''
 
-            h6.textContent = dish['Name'] + ' / ' + '€' + dish['Price']
-            p.textContent = dish['Ingredients']
+        const firstDiv = document.createElement('div')
+        firstDiv.setAttribute('class', '.restaurant-container')
+        
+        const categoryDiv = document.createElement('div')
+        categoryDiv.setAttribute('id', 'category-title')
+        const h2 = document.createElement('h2')
+        h2.setAttribute('class', 'title')
+
+        h2.textContent = dishes[0]['CategoryName']
+        
+        categoryDiv.appendChild(h2)
+        firstDiv.appendChild(categoryDiv)
+
+        let nameCategory = dishes[0]['CategoryName'];
+
+        for(const dish of dishes){
+            if(dish['CategoryName'] != nameCategory){
+                const categoryDiv = document.createElement('div')
+                categoryDiv.setAttribute('id', 'category-title')
+
+                const h2 = document.createElement('h2')
+                h2.setAttribute('class', 'title')
+
+                h2.textContent = dish['CategoryName']
+                nameCategory = dish['CategoryName'];
+
+                categoryDiv.appendChild(h2)
+                firstDiv.appendChild(categoryDiv)
+            }
+
+            const restaurantDiv = document.createElement('div')
+            restaurantDiv.setAttribute('class', 'RestaurantCategory')
+
+            const img = document.createElement('img')
             img.src='../images/dishes/thumbs_small/' + dish['ImageId'] + '.jpg'
-            h2.textContent = dish['CategoryName']
+
+            const secondDiv = document.createElement('div')
+
+            const h3 = document.createElement('h3')
+            const pPrice = document.createElement('p')
+            const pIngredients = document.createElement('p')
+
+            h3.setAttribute('id', 'dish-name')
+            pPrice.setAttribute('id', 'dish-price')
+            pIngredients.setAttribute('class', 'DishIngredients')
+
+            h3.textContent = dish['Name']
+
+            pPrice.textContent = dish['Price'].toLocaleString("en",{useGrouping: false,minimumFractionDigits: 2})
+            pIngredients.textContent = dish['Ingredients']
+
+            secondDiv.appendChild(h3)
+            secondDiv.appendChild(pPrice)
+            secondDiv.appendChild(pIngredients)
+            
+
+            const button = document.createElement('button')
+            const input = document.createElement('input')
+
+            input.setAttribute('type', 'number')
+            input.setAttribute('value', '1')
+            input.setAttribute('min', '1')
+            input.setAttribute('class', 'quantity')
+
+            button.setAttribute('id','register-btn')
             button.textContent = 'Purchase'
 
+            restaurantDiv.appendChild(img)
+            restaurantDiv.appendChild(secondDiv)
+            restaurantDiv.appendChild(input)
+            restaurantDiv.appendChild(button)
 
-            form.appendChild(button)
-            secondDiv.appendChild(h6)
-            secondDiv.appendChild(img)
-            secondDiv.appendChild(p)
-            secondDiv.appendChild(form)
+            firstDiv.appendChild(restaurantDiv)
 
-            firstDiv.appendChild(h2)
-            firstDiv.appendChild(secondDiv)
+            section.appendChild(firstDiv)
         }
     })
 }   

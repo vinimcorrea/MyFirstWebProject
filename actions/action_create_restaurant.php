@@ -84,19 +84,7 @@
 
     $category = Category::getCategoryByName($db, $_POST['rest-category']);
 
-    $restaurant = Restaurant::createRestaurant($db, $user, $_POST['rest-name'], $_POST['rest-price'], $category->categoryId, (int) $image_id);
-
-    $RestaurantId = $db->lastInsertId();
-
-    $stmt = $db-> prepare('
-        INSERT INTO RestaurantAddress(RestaurantId, AddressId) 
-        VALUES(:RestaurantId, :AddressId)'
-    );
-
-    $stmt->execute([
-        ':RestaurantId' => $RestaurantId,
-        ':AddressId'    => $Addressid   
-    ]);
+    $restaurant = Restaurant::createRestaurant($db, $user, $_POST['rest-name'], $_POST['rest-price'], $category->categoryId, (int) $image_id, (int) $Addressid);
 
     header('Location: ../pages/profile.php');
 ?>
