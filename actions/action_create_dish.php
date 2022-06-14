@@ -89,13 +89,8 @@
         $categoryId = $db->lastInsertId();
     }
 
-    $vegan_dish = false;
 
-    if(!empty($_POST['dish-vegan'])){
-        $dish = Dish::createDish($db, $_POST['dish-name'], $_POST['dish-price'], $_POST['dish-ing'], boolval(1), $categoryId, $_SESSION['id'], (int) $image_id);
-    } else {
-        $dish = Dish::createDish($db, $_POST['dish-name'], $_POST['dish-price'], $_POST['dish-ing'], boolval(0), $categoryId, $_SESSION['id'], (int) $image_id);
-    }
+    $dish = Dish::createDish($db, $_POST['dish-name'], $_POST['dish-price'], $_POST['dish-ing'], boolval(0), $categoryId, $_SESSION['id'], (int) $image_id);
 
 
     header('Location: ../pages/restaurant.php?id=' . $_SESSION['id']);

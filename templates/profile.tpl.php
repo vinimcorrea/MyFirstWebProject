@@ -54,17 +54,6 @@
             </div>
         <?php } ?>
 
-        <?php if($user->isOwner){ ?>
-            <div>
-                <a href="../pages/add_restaurant.php" class="edit_profile">Add restaurant</a>
-            </div>  
-        <?php } ?>
-
-        <div>
-            <a href="../actions/action_logout.php" class="edit_profile">Sign Out</a>
-        </div>
-    
-
     </section>
 
 <?php } ?>

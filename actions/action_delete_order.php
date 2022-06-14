@@ -14,16 +14,10 @@
 
     $db = getDatabaseConnection();
 
-    $email = $session->getEmail();
-
-    $status = $_POST['change-order-status'];
-
     $orderId = $_POST['package-order-id'];
 
-    Order::getOrderWithId($db, (int) $orderId);
+    Order::deleteOrderWithId($db, (int) $orderId);
 
-    $order->status = $status;
-    $order->save($db);
 
     header('Location: ../pages/order_received.php');
 ?>

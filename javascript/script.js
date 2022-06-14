@@ -159,20 +159,16 @@ if(searchRestaurantName){
     for(const restaurant of restaurants){
         const div = document.createElement('div')
         div.className = 'rest_items'
+        const divA = document.createElement('a')
+        divA.href = "/../pages/restaurant.php?id=" + restaurant['RestaurantId']
         const span = document.createElement('span')
         span.className = 'caption'
         const img = document.createElement('img')
    
 
-        const spanDiv = document.createElement('div')
         const spanA = document.createElement('a')
         spanA.href = "/../pages/restaurant.php?id=" + restaurant['RestaurantId']
         const spanP = document.createElement('p')
-
-        spanDiv.className = 'rest_review'
-
-
-        spanDiv.textContent = restaurant['Review']
 
 
         img.src = '../images/restaurants/thumbs_small/' + restaurant['ImageId'] + '.jpg'
@@ -180,10 +176,11 @@ if(searchRestaurantName){
         spanA.textContent = restaurant['RestaurantName']
         
         span.appendChild(spanA)
-        span.appendChild(spanDiv)
         span.appendChild(spanP)
 
-        div.appendChild(img)
+        divA.appendChild(img)
+
+        div.appendChild(divA)
         div.appendChild(span)
 
         section.appendChild(div)
@@ -205,31 +202,26 @@ if(searchRestaurantCategory){
         for(const restaurant of restaurants){
             const div = document.createElement('div')
             div.className = 'rest_items'
+            const divA = document.createElement('a')
+            divA.href = "/../pages/restaurant.php?id=" + restaurant['RestaurantId']
             const span = document.createElement('span')
             span.className = 'caption'
             const img = document.createElement('img')
    
-
-            const spanDiv = document.createElement('div')
             const spanA = document.createElement('a')
             spanA.href = "/../pages/restaurant.php?id=" + restaurant['RestaurantId']
             const spanP = document.createElement('p')
-
-            spanDiv.className = 'rest_review'
-
-
-            spanDiv.textContent = restaurant['Review']
-
 
             img.src = '../images/restaurants/thumbs_small/' + restaurant['ImageId'] + '.jpg'
             spanP.textContent = restaurant['name']
             spanA.textContent = restaurant['RestaurantName']
             
             span.appendChild(spanA)
-            span.appendChild(spanDiv)
             span.appendChild(spanP)
 
-            div.appendChild(img)
+            divA.appendChild(img)
+
+            div.append(divA)    
             div.appendChild(span)
 
             section.appendChild(div)

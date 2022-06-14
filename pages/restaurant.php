@@ -37,17 +37,17 @@
 
   $address     = Address::getAddressWithResId($db, intval($_GET['id']));
 
-  $userAddress = Address::getAddressWithEmail($db, $session->getEmail());
+  
   $dishes      = Dish::getRestaurantDishes($db, $restaurant->restaurantId);
   $categories  = Category::getCategories($db, 10);
 
   $_SESSION['id'] = $restaurant->restaurantId;
 
-  $order = Order::getOrderWithCustomerId($db, $session->getEmail());
-
   drawHeader($session);
   drawRestaurant($restaurant, $categories, $dishes, $address, $restaurantOwner, $session);
   if($session->isLoggedIn()){
+    $order = Order::getOrderWithCustomerId($db, $session->getEmail());
+    $userAddress = Address::getAddressWithEmail($db, $session->getEmail());
     if($userAddress != null){
       if($order == null){
         drawOrderTable();

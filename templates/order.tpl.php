@@ -58,7 +58,7 @@
       <label>Price:</label>
       <?=$order['TotalPrice']?>
       <div>
-      <label>Customer name:</label>
+      <label customer-order-id="<?=$order['OrderId']?>">Customer name:</label>
       <?=$order['FirstName']?>
       <?=$order['LastName']?>
       </div>
@@ -74,16 +74,25 @@
         <?=$order['Country']?>
         <?=$order['postalcode']?>
       </div>
-      <form method="post" action="../actions/action_change_order_status.php">
-      <label>Change order status:</label>
-      <select name="change-order-status">
-          <option value="Received">Received</option>
-          <option value="Preparing">Preparing</option>
-          <option value="Ready">Ready</option>
-          <option value="Delivered">Delivered</option>
-      </select>
-      <button type="submit">submit</button>
-      </form>
+        <?php if($order['Status'] == "Delivered") {?>
+          <label>Order is delivered!</label>
+          <form method="post" action="../actions/action_delete_order.php">
+          <input type="number" name="package-order-id" class="hide" value="<?=$order['OrderId']?>">
+          <button type="submit">delete</button>
+          </form>
+        <?php } else {?>
+          <label>Change order status:</label>
+          <form method="post" action="../actions/action_change_order_status.php">
+          <select name="change-order-status">
+            <option value="Received">Received</option>
+            <option value="Preparing">Preparing</option>
+            <option value="Ready">Ready</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+          <input type="number" name="package-order-id" class="hide" value="<?=$order['OrderId']?>">
+          <button type="submit">submit</button>
+          </form>
+      <?php } ?>
     </div>
 
 <?php }?>

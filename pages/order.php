@@ -12,21 +12,23 @@
  require_once(__DIR__ . '/../templates/common.tpl.php');
  require_once(__DIR__ . '/../templates/order.tpl.php');
 
+ 
+ 
+ 
+ 
+ 
  $db = getDatabaseConnection();
 
  $email = $session->getEmail();
 
-
  $order = Order::getOrderWithCustomerId($db, $email);
 
-
-
  drawHeader($session);
- if($order != null){
+ if($order != false){
     $ordered_dishes = Dish::getOrderDishes($db, $order->orderId);
     drawOrderedCustomer($order, $ordered_dishes);
  } else {
-     drawNotOrdered();
+    drawNotOrdered();
  }
  drawFooter();
 

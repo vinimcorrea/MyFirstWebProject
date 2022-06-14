@@ -45,7 +45,7 @@ class Order
         ]));
     }
 
-    public static function getOrderWithCustomerId(PDO $db, string $id): Order
+    public static function getOrderWithCustomerId(PDO $db, string $id)
     {
         $stmt = $db->prepare('
         SELECT OrderId, CustomerId, RestaurantId, TotalPrice, DateTime, Status, Note, AddressId
@@ -55,6 +55,8 @@ class Order
         $stmt->execute(array($id));
         
         $order = $stmt->fetch();
+
+        if($order == null) return false;
 
         return new Order(
             $order['OrderId'],
@@ -90,6 +92,40 @@ class Order
 
         return $orders;
 
+    }
+
+
+    public static function getOrderWithId(PDO $db, int $id): Order
+    {
+        $stmt = $db->prepare('
+        SELECT OrderId, CustomerId, RestaurantId, TotalPrice, DateTime, Status, Note, AddressId
+        FROM _Order
+        WHERE OrderId = ?');
+
+        $stmt->execute(array($id));
+        
+        $order = $stmt->fetch();
+
+        return new Order(
+            $order['OrderId'],
+            $order['CustomerId'],
+            $order['RestaurantId'],
+            $order['TotalPrice'],
+            $order['DateTime'],
+            $order['Status'],
+            $order['Note'],
+            $order['AddressId']
+        );
+    }
+
+    public static function deleteOrderWithId(PDO $db, int $id)
+    {
+        $stmt = $db->prepare('
+        DELETE
+        FROM _Order
+        WHERE OrderId = ?');
+
+        $stmt->execute(array($id));
     }
 
 
@@ -129,9 +165,6 @@ class OrderedDish
         ]); 
     }
 
-    static function updateStatus(PDO $db, int $orderId, $status){
-
-    }
 }
 
 ?>

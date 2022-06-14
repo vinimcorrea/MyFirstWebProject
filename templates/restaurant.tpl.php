@@ -14,29 +14,31 @@
 <?php function drawRestaurants(array $restaurants, array $categories) { ?>
   <header class="main_rest">
     <div class="searchRestaurant">
-      <p> What you need is here.<br>Ask and receive wherever you are. 
-      </p>
+      <p id="title-main-page"> What you need is here.</p>
+      <p id="second-title-main-page">Ask and receive wherever you are.</p>
       <form class="mainsearch" onsubmit="event.preventDefault();" role="search">
         <input id="search-restaurants" type="search" placeholder="Search..." autofocus required />  
       </form>
     </div>
   </header>
-  <h3 id="title_ctg"> Categories </h3>
+  <h2 id="title-ctg">Categories</h2>
   <div class="categories-select">
     <form method="get">
     <select name="rest-category" id="search-restaurant-by-category">
-        <option value="All">All</option>
+    <option value="" disabled selected>Select Your Desired Category</option>
         <?php foreach($categories as $category){ ?>
           <option value="<?=$category->name?>"><?=$category->name?></option>
         <?php } ?>
     </select>
     </form>
   </div>  
-  <h3 id="title_rest"> Restaurants </h3>
+  <h2 id="title-rest">Restaurants</h2>
   <section id="restaurants">
     <?php foreach($restaurants as $restaurant) { ?> 
       <div class="rest_items">
+        <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
         <img src="../images/restaurants/thumbs_small/<?=$restaurant->imageId?>.jpg" alt="Screen 2" <?=$restaurant->restaurantId?>">
+        </a>
         <span class="caption">
           <a href="/../pages/restaurant.php?id=<?=$restaurant->restaurantId?>">
               <?=$restaurant->restaurantName?>
