@@ -1,8 +1,13 @@
-# Faustino Express Delivery
+# Languages and Tecnologies Web
 
-Find the best food inside our website. What you need is here.
 
-Ask and receive wherever you are.
+* Short description: This is my first website created for a project of the university.
+* Environment: Unix/MacOS console
+* Tools: PHP, JS, HTML, CSS, JSON, Sqlite
+* Institution: FEUP
+* Course: LTW (Languages and Tecnologies Web)
+* Group members: 
+  * Vinícius Macedo Corrêa (up202001417@fe.up.pt / vinimcorrea@hotmail.com)
 
 ## Features
 
