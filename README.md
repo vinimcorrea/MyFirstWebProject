@@ -3,7 +3,7 @@
 
 * Short description: This is my first website created for a project of the university.
 * Environment: Unix/MacOS console
-* Tools: PHP, JS, HTML, CSS, JSON, Sqlite
+* Tools: PHP, JS, HTML, CSS, JSON, AJAX, Sqlite
 * Institution: FEUP
 * Course: LTW (Languages and Tecnologies Web)
 * Group members: 
