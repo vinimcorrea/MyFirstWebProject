@@ -6,7 +6,7 @@
 * Tools: PHP, JS, HTML, CSS, JSON, AJAX, Sqlite
 * Institution: FEUP
 * Course: LTW (Languages and Tecnologies Web)
-* Group members: 
+* Project author: 
   * Vinícius Macedo Corrêa (up202001417@fe.up.pt / vinimcorrea@hotmail.com)
 
 ## Features
